@@ -11,5 +11,5 @@
 | [[Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？](https://ithelp.ithome.com.tw/articles/10318087) | -  |
 | [[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作]() | [Code](https://www.kaggle.com/code/andy6804tw/day-25-xai)  |
 | [[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷](https://ithelp.ithome.com.tw/articles/10337150) | [Code]()  |
-| [[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型的黑盒模型](https://ithelp.ithome.com.tw/articles/10337606) | [Code]()  |
+| [[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型](https://ithelp.ithome.com.tw/articles/10337606) | [Code]()  |
 | []() | []()  |

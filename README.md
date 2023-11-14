@@ -17,7 +17,7 @@
 | [[Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯](https://ithelp.ithome.com.tw/articles/10323663) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/7.KNN與XAI：從鄰居中找出模型的決策邏輯.ipynb)  |
 | [[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性](https://ithelp.ithome.com.tw/articles/10324299) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/8.解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性.ipynb)  |
 | [[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性](https://ithelp.ithome.com.tw/articles/10325159) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/9.基於樹狀結構的XAI方法：決策樹的可解釋性.ipynb)  |
-| [[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為](https://ithelp.ithome.com.tw/articles/10325613) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/10.Permutation Importance：從特徵重要性角度解釋整個模型行為.ipynb)  |
+| [[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為](https://ithelp.ithome.com.tw/articles/10325613) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/10.Permutation%20Importance：從特徵重要性角度解釋整個模型行為.ipynb)  |
 | [[Day 11] Partial Dependence Plot：探索特徵對預測值的影響](https://ithelp.ithome.com.tw/articles/10326424) | []()  |
 | [[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型](https://ithelp.ithome.com.tw/articles/10327698) | []()  |
 | [[Day 13] LIME實作：實戰演練LIME解釋方法](https://ithelp.ithome.com.tw/articles/10328780) | []()  |

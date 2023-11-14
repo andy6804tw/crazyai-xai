@@ -18,7 +18,7 @@
 | [[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性](https://ithelp.ithome.com.tw/articles/10324299) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/8.解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性.ipynb)  |
 | [[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性](https://ithelp.ithome.com.tw/articles/10325159) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/9.基於樹狀結構的XAI方法：決策樹的可解釋性.ipynb)  |
 | [[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為](https://ithelp.ithome.com.tw/articles/10325613) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/10.Permutation%20Importance：從特徵重要性角度解釋整個模型行為.ipynb)  |
-| [[Day 11] Partial Dependence Plot：探索特徵對預測值的影響](https://ithelp.ithome.com.tw/articles/10326424) | []()  |
+| [[Day 11] Partial Dependence Plot：探索特徵對預測值的影響](https://ithelp.ithome.com.tw/articles/10326424) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/11.Partial%20Dependence%20Plot：探索特徵對預測值的影響.ipynb)  |
 | [[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型](https://ithelp.ithome.com.tw/articles/10327698) | []()  |
 | [[Day 13] LIME實作：實戰演練LIME解釋方法](https://ithelp.ithome.com.tw/articles/10328780) | []()  |
 | [[Day 14] SHAP理論：解析SHAP解釋方法的核心](https://ithelp.ithome.com.tw/articles/10329606) | []()  |

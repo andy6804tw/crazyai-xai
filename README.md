@@ -20,7 +20,7 @@
 | [[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為](https://ithelp.ithome.com.tw/articles/10325613) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/10.Permutation%20Importance：從特徵重要性角度解釋整個模型行為.ipynb)  |
 | [[Day 11] Partial Dependence Plot：探索特徵對預測值的影響](https://ithelp.ithome.com.tw/articles/10326424) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/11.Partial%20Dependence%20Plot：探索特徵對預測值的影響.ipynb)  |
 | [[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型](https://ithelp.ithome.com.tw/articles/10327698) | -  |
-| [[Day 13] LIME實作：實戰演練LIME解釋方法](https://ithelp.ithome.com.tw/articles/10328780) | []()  |
+| [[Day 13] LIME實作：實戰演練LIME解釋方法](https://ithelp.ithome.com.tw/articles/10328780) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/13.LIME實作：實戰演練LIME解釋方法.ipynb)  |
 | [[Day 14] SHAP理論：解析SHAP解釋方法的核心](https://ithelp.ithome.com.tw/articles/10329606) | -  |
 | [[Day 15] SHAP實作：實戰演練SHAP解釋方法](https://ithelp.ithome.com.tw/articles/10330115) | []()  |
 | [[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？](https://ithelp.ithome.com.tw/articles/10330576) | -  |

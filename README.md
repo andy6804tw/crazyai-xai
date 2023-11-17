@@ -24,7 +24,7 @@
 | [[Day 14] SHAP理論：解析SHAP解釋方法的核心](https://ithelp.ithome.com.tw/articles/10329606) | -  |
 | [[Day 15] SHAP實作：實戰演練SHAP解釋方法](https://ithelp.ithome.com.tw/articles/10330115) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/15.SHAP實作：實戰演練SHAP解釋方法.ipynb)   |
 | [[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？](https://ithelp.ithome.com.tw/articles/10330576) | -  |
-| [[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋](https://ithelp.ithome.com.tw/articles/10331443) | []()  |
+| [[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋](https://ithelp.ithome.com.tw/articles/10331443) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/17.解析深度神經網路：使用Deep%20SHAP進行模型解釋.ipynb)  |
 | [[Day 18] CNN：卷積深度神經網路的解釋方法](https://ithelp.ithome.com.tw/articles/10332039) | []()  |
 | [[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路](https://ithelp.ithome.com.tw/articles/10332904) | []()  |
 | [[Day 20] Gradient-Based：利用梯度訊息解釋神經網路](https://ithelp.ithome.com.tw/articles/10333578) | []()  |

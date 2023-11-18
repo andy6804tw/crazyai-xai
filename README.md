@@ -27,7 +27,7 @@
 | [[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋](https://ithelp.ithome.com.tw/articles/10331443) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/17.解析深度神經網路：使用Deep%20SHAP進行模型解釋.ipynb)  |
 | [[Day 18] CNN：卷積深度神經網路的解釋方法](https://ithelp.ithome.com.tw/articles/10332039) | -  |
 | [[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路](https://ithelp.ithome.com.tw/articles/10332904) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/19.Perturbation-Based：如何用擾動方法解釋神經網路.ipynb)  |
-| [[Day 20] Gradient-Based：利用梯度訊息解釋神經網路](https://ithelp.ithome.com.tw/articles/10333578) | []()  |
+| [[Day 20] Gradient-Based：利用梯度訊息解釋神經網路](https://ithelp.ithome.com.tw/articles/10333578) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/20.Gradient-Based：利用梯度訊息解釋神經網路.ipynb)  |
 | [[Day 21] Propagation-Based：探索反向傳播法的可解釋性](https://ithelp.ithome.com.tw/articles/10334191) | []()  |
 | [[Day 22] CAM-Based：如何解釋卷積神經網路](https://ithelp.ithome.com.tw/articles/10334625) | []()  |
 | [[Day 23] Attention-Based：使用注意力機制解釋CNN模型](https://ithelp.ithome.com.tw/articles/10335422) | []()  |

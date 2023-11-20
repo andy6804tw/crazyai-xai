@@ -30,7 +30,7 @@
 | [[Day 20] Gradient-Based：利用梯度訊息解釋神經網路](https://ithelp.ithome.com.tw/articles/10333578) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/20.Gradient-Based：利用梯度訊息解釋神經網路.ipynb)  |
 | [[Day 21] Propagation-Based：探索反向傳播法的可解釋性](https://ithelp.ithome.com.tw/articles/10334191) | -  |
 | [[Day 22] CAM-Based：如何解釋卷積神經網路](https://ithelp.ithome.com.tw/articles/10334625) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/22.CAM-Based：如何解釋卷積神經網路.ipynb)  |
-| [[Day 23] Attention-Based：使用注意力機制解釋CNN模型](https://ithelp.ithome.com.tw/articles/10335422) | []()  |
+| [[Day 23] Attention-Based：使用注意力機制解釋CNN模型](https://ithelp.ithome.com.tw/articles/10335422) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/23.Attention-Based：使用注意力機制解釋CNN模型.ipynb)  |
 | [[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測](https://ithelp.ithome.com.tw/articles/10335915) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/24.LSTM的可解釋性：從時序資料解析人體姿態預測.ipynb)  |
 | [[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作]() | [Code](https://www.kaggle.com/code/andy6804tw/day-25-xai)  |
 | [[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷](https://ithelp.ithome.com.tw/articles/10337150) | [Code](https://colab.research.google.com/github/andy6804tw/2023-15th-ironman/blob/main/26.XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷.ipynb)  |

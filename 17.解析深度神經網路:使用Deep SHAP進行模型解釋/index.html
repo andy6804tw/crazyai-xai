@@ -1,0 +1,713 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="../assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="../assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="../assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="../stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-17-deep-shap" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1.XAI基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1.XAI基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../1.揭開模型的神秘面紗:為何XAI對機器學習如此重要/" title="[Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？">
+      [Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../2.從黑盒到透明化:XAI技術的發展之路/" title="[Day 2] 從黑盒到透明化：XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化：XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../3.機器學習中的可解釋性指標/" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../4.LIME vs SHAP:哪種XAI解釋方法更適合你/" title="[Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？">
+      [Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../5.淺談XAI與傳統機器學習的區別/" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2.XAI在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2.XAI在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../6.非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用/" title="[Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../7.KNN與XAI:從鄰居中找出模型的決策邏輯/" title="[Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../8.解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性/" title="[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../9.基於樹狀結構的XAI方法:決策樹的可解釋性/" title="[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../10.Permutation Importance:從特徵重要性角度解釋整個模型行為/" title="[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../11.Partial Dependence Plot:探索特徵對預測值的影響/" title="[Day 11] Partial Dependence Plot：探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot：探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3.XAI常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3.XAI常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../12.LIME理論:如何用局部線性近似解釋黑箱模型/" title="[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論：如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../13.LIME實作:實戰演練LIME解釋方法/" title="[Day 13] LIME實作：實戰演練LIME解釋方法">
+      [Day 13] LIME實作：實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../14.SHAP理論:解析SHAP解釋方法的核心/" title="[Day 14] SHAP理論：解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論：解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../15.SHAP實作:實戰演練SHAP解釋方法/" title="[Day 15] SHAP實作：實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作：實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4.XAI在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4.XAI在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../16.神經網路的可解釋性:如何理解深度學習中的黑箱模型/" title="[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？">
+      [Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+      </label>
+<a class="md-nav__link md-nav__link--active" href="./" title="[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#feature-attribution" title="Feature Attribution">
+    Feature Attribution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#additive-feature-attribution-methods" title="Additive Feature Attribution Methods">
+    Additive Feature Attribution Methods
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap-deeplift-shapley-values" title="Deep SHAP (DeepLIFT + Shapley Values)">
+    Deep SHAP (DeepLIFT + Shapley Values)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap-dnn" title="[實作] 使用 Deep SHAP 解釋 DNN 模型">
+    [實作] 使用 Deep SHAP 解釋 DNN 模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="建立與訓練神經網路">
+    建立與訓練神經網路
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap" title="Deep SHAP 解釋模型">
+    Deep SHAP 解釋模型
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-summary-plot" title="SHAP Summary Plot (全局解釋)">
+    SHAP Summary Plot (全局解釋)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-force-plot" title="SHAP Force plot (單筆資料解釋)">
+    SHAP Force plot (單筆資料解釋)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-waterfall-plot" title="SHAP waterfall plot (單筆資料解釋)">
+    SHAP waterfall plot (單筆資料解釋)
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.CNN:卷積深度神經網路的解釋方法/" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+      [Day 18] CNN：卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21.Propagation-Based:探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22.CAM-Based:如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+      [Day 22] CAM-Based：如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23.Attention-Based:使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based：使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5.XAI在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5.XAI在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../24.LSTM的可解釋性:解析步態分類中的時序資料/" title="[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../25.XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作/" title="[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../26.智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據/" title="[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../27.XAI在NLP中的應用:以情感分析解釋語言模型/" title="[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用：以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6.XAI的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6.XAI的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../28.誤差分析和對抗樣本:如何利用XAI檢測模型的弱點/" title="[Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？">
+      [Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../29.XAI如何影響人類對技術的信任和接受程度/" title="[Day 29] XAI如何影響人類對技術的信任和接受程度？">
+      [Day 29] XAI如何影響人類對技術的信任和接受程度？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../30.XAI未來發展方向:向更可靠的機器學習模型邁進/" title="[Day30] XAI未來發展方向：向更可靠的機器學習模型邁進">
+      [Day30] XAI未來發展方向：向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#feature-attribution" title="Feature Attribution">
+    Feature Attribution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#additive-feature-attribution-methods" title="Additive Feature Attribution Methods">
+    Additive Feature Attribution Methods
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap-deeplift-shapley-values" title="Deep SHAP (DeepLIFT + Shapley Values)">
+    Deep SHAP (DeepLIFT + Shapley Values)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap-dnn" title="[實作] 使用 Deep SHAP 解釋 DNN 模型">
+    [實作] 使用 Deep SHAP 解釋 DNN 模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="建立與訓練神經網路">
+    建立與訓練神經網路
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deep-shap" title="Deep SHAP 解釋模型">
+    Deep SHAP 解釋模型
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-summary-plot" title="SHAP Summary Plot (全局解釋)">
+    SHAP Summary Plot (全局解釋)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-force-plot" title="SHAP Force plot (單筆資料解釋)">
+    SHAP Force plot (單筆資料解釋)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-waterfall-plot" title="SHAP waterfall plot (單筆資料解釋)">
+    SHAP waterfall plot (單筆資料解釋)
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-17-deep-shap">[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋</h1>
+<h2 id="feature-attribution">Feature Attribution</h2>
+<p>Feature Attribution(特徵歸因)是機器學習領域中的一個重要概念，它用於解釋模型的預測結果。當我們訓練機器學習模型，特別是深度學習模型，這些模型通常是黑盒子，難以理解為什麼模型會做出特定的預測。因此<code>特徵歸因</code>的目標是找出模型中每個輸入特徵對於最終預測的貢獻或影響程度，這有助於我們理解模型的運作原理，並檢查模型是否依據我們的期望運作，以及發現可能的偏差或不公平性。在機器學習中，特徵歸因通常有以下幾種常見的方法：</p>
+<ul>
+<li>特徵重要性（Feature Importance）：這種方法衡量了每個特徵對於模型預測的影響程度，可以透過 LIME 或 SHAP 等解釋工具進行特徵重要性分析。<ul>
+<li>SHAP（SHapley Additive exPlanations）：SHAP 基於博弈論的概念，它試圖將每個特徵的貢獻分配給模型預測的結果。Shapley values綜合考慮了特徵的重要性以及特徵之間的交互作用，因此在解釋複雜模型時很有用。</li>
+<li>LIME（Local Interpretable Model-agnostic Explanations）：LIME 通常用於解釋某筆資料為何做出這樣判斷，它主要生成一個簡單可解釋的線性模型，來解釋模型的預測。</li>
+</ul>
+</li>
+<li>基於梯度方法（Gradient-Based Methods）：這些方法基於模型的梯度訊息，試圖找出哪些特徵對於某個預測的梯度貢獻最大。</li>
+<li>遮罩或屏蔽方法（Masking or Perturbation Methods）：這些方法通過對輸入特徵進行修改，觀察模型預測的變化，來評估每個特徵的重要性。例如可以將某個特徵的值設置為零，然後觀察預測的變化。</li>
+</ul>
+<h2 id="additive-feature-attribution-methods">Additive Feature Attribution Methods</h2>
+<p>Additive Feature Attribution(AFA) 方法的核心思想是將一個模型的預測分解成每個特徵的貢獻部分，這樣可以更容易理解模型的決策過程。該方法旨在理解每個特徵對模型預測的貢獻，它們假設模型對於輸入特徵的預測是可分解的，因此模型的預測可以被分解成每個特徵的影響，並且這些影響是可以相加的。一些解釋機器學習模型預測的方法，例如 LIME、SHAP、DeepLIFT 和 Layer-Wise Relevance Propagation，這些方法都屬於 AFA 的家族其中一員。AFA 方法的基本定義如下：</p>
+<p><img alt="" src="../image/img17-1.png"/></p>
+<ul>
+<li>g是一個簡單的可解釋模型，它可能是一個用於解釋複雜模型的模型，通常是一個線性模型或類似的簡單模型。</li>
+<li>式子中的每個𝜙i代表第i個特徵的影響程度或重要性。當一個特徵的𝜙i值較大時，意味著這個特徵對模型的預測有較大的影響。</li>
+<li>𝑧′是一個由0和1組成的二元向量，其中M代表簡化特徵的數量。這個向量表示了在模型中哪些特徵被考慮到，哪些沒有被考慮到。當特徵在向量中對應的位置是1時，表示這個特徵在模型中被考慮到了；當對應位置是0時，表示該特徵未被考慮。</li>
+</ul>
+<p>簡單來說，AFA 方法的目標是通過一個簡單的可解釋模型 g 來解釋複雜模型的預測。它使用二元向量 𝑧′ 來表示哪些特徵在解釋中被考慮，並使用 𝜙i 作為權重來量化每個特徵對預測的影響程度。這樣的方法有助於理解模型是如何根據不同的特徵來做出預測的，提高了模型的可解釋性。不同的 AFA 方法可能使用不同的技術來計算 𝜙i 值，但它們都遵循這個基本框架進行模型解釋。</p>
+<h2 id="deep-shap-deeplift-shapley-values">Deep SHAP (DeepLIFT + Shapley Values)</h2>
+<p>今天要介紹在 SHAP 套件中的 Deep SHAP 方法，它結合了 DeepLIFT 和 Shapley values 的概念，以計算每個特徵對於模型預測的貢獻，使更好地解釋神經網路模型的預測。</p>
+<p><img alt="" src="../image/img17-2.png"/></p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/1704.02685">DeepLIFT</a> (Deep Learning Important FeaTures)：是基於反向傳播的解釋方法，透過比較模型的預測輸出與參考輸出之間的差異來計算每個輸入特徵對預測的貢獻。使得我們可以了解每個特徵對模型預測的相對影響。</p>
+</li>
+<li>
+<p>Shapley Values：用於評估每個特徵對模型預測的影響。它考慮了每個特徵的不同排列組合，以確定每個特徵的貢獻度。使得我們可以更好地理解模型預測背後的特徵重要性。</p>
+</li>
+</ul>
+<blockquote>
+<p>今天的練習將使用 SHAP 套件中的 DeepExplainer(Deep SHAP) 方法作為展示。</p>
+</blockquote>
+<h2 id="deep-shap-dnn">[實作] 使用 Deep SHAP 解釋 DNN 模型</h2>
+<p>本日範例將透過 TensorFlow 實作 DNN 模型，並使用 sklearn 的資料集 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html">fetch_california_housing</a> 來預測加州地區的房屋價格中位數。這個資料集包含了 8 個特徵，分別是：</p>
+<ul>
+<li>MedInc：該區域內家庭收入的中位數</li>
+<li>HouseAge：該區域內房屋的平均房齡</li>
+<li>AveRooms：該區域內房屋的平均房間數</li>
+<li>AveBedrms：該區域內房屋的平均臥室數</li>
+<li>Population：該區域內人口數</li>
+<li>AveOccup：該區域內平均每個房屋的居住人數</li>
+<li>Latitude：該區域內房屋所在緯度</li>
+<li>Longitude：該區域內房屋所在經度</li>
+</ul>
+<p>這個資料集包含了 20640 筆樣本，每個樣本都有上述 8 個特徵以及房屋價格中位數作為目標變數。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># 載入加州地區房屋價格預測資料集</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
+<span class="n">x_feature_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># 切分資料集為訓練集和測試集</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+<h2 id="_1">建立與訓練神經網路</h2>
+<p>以下程式碼使用 Tensorflow2.0 Functional API 搭建神經網路。此模型接受一個輸入，然後通過一系列神經網路層進行處運算，最後輸出一個單一的數值即為房屋價格中位數。模型的層次結構包括：一個正規化層（Normalization）用於對輸入進行正規化，三個全連接層（Dense）用於提取特徵和學習模型的映射，最後一個全連接層輸出單一值，並使用 ReLU 激發函數達到非線性轉換。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">layers</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+
+<span class="k">def</span> <span class="nf">build_model</span><span class="p">():</span>
+    <span class="c1"># 資料正規化</span>
+    <span class="n">model_input</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">norm_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Normalization</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">norm_layer</span><span class="o">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">norm_layer</span><span class="p">(</span><span class="n">model_input</span><span class="p">)</span>
+    <span class="c1"># 第一層隱藏層</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># 第二層隱藏層</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c1"># 輸出層</span>
+    <span class="n">model_output</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">model_input</span> <span class="p">,</span><span class="n">model_output</span><span class="p">)</span>
+</pre></div>
+<p>接下來，使用之前定義的 <code>build_model()</code> 函數建立一個新的神經網絡模型，並將這個模型存儲在 model 變數中。最後使用 <code>model.summary()</code> 印出模型的摘要訊息，包括模型的結構、每一層的參數數量等。</p>
+<div class="codehilite"><pre><span></span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">clear_session</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+<p><img alt="" src="../image/img17-3.png"/></p>
+<p>模型準備就緒後即可開始訓練模型。這裡使用 Adam 優化器設定學習率為 0.001，並使用均方誤差（MSE）作為損失函數。接下來設定批次大小為 64，訓練迭代次數為 50 次。最後使用訓練數據 X_train 和 y_train 來訓練模型。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span>
+
+<span class="c1"># 編譯模型</span>
+<span class="n">optim</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'mse'</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">optim</span><span class="p">)</span>
+
+<span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># 訓練模型</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+                    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+                    <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+<h2 id="deep-shap">Deep SHAP 解釋模型</h2>
+<p>以下建立一個 DeepExplainer 解釋器，並指定了要解釋的模型（model）和訓練數據（X_train）。然後透過 Deep SHAP 來估計 Shapley values，並將其存儲在 shap_values 變數中。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">shap</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">initjs</span><span class="p">()</span>
+
+<span class="c1"># 使用 Deep SHAP 解釋模型</span>
+<span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">DeepExplainer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">X_train</span><span class="p">)</span>
+<span class="c1"># 估計 Shapley values</span>
+<span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">shap_values</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+<h3 id="shap-summary-plot">SHAP Summary Plot (全局解釋)</h3>
+<p>我們可以透過 SHAP Summary Plot 進行模型的全局解釋，該圖表顯示每個特徵變量對整體平均模型輸出的平均影響。在該圖表中，我們可以看到每個特徵對於模型的預測輸出的平均貢獻程度，有助於理解哪些特徵對模型的預測起著重要作用，哪些特徵影響較小。從分析結果可以發現地理位置(經緯度)以及家庭收入和成員數對於預測該地區房價是有顯著的影響性。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 獲得每個特徵對於整體平均貢獻的值</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">summary_plot</span><span class="p">(</span><span class="n">shap_values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">'median house value'</span><span class="p">],</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="../image/img17-4.png"/></p>
+<h3 id="shap-force-plot">SHAP Force plot (單筆資料解釋)</h3>
+<p>由於我們從資料集切割 21 筆作為測試集，剛剛上面的全局解釋是針對這 21 筆資料進行平均整體性解釋。接著我們一樣可以針對每一筆數據進行解釋分析。首先程式中的 index 被設定為0，表示我們要觀察測試集中的第一筆資料。接著使用 <code>force_plot</code> 對這筆資料進行預測，並將分析結果視覺化呈現。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 觀察測試集中第一筆資料預測重要程度</span>
+<span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'測試集第 </span><span class="si">{</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> 筆模型預測結果: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">[[</span><span class="n">index</span><span class="p">],</span><span class="w"> </span><span class="p">:])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">force_plot</span><span class="p">(</span><span class="n">explainer</span><span class="o">.</span><span class="n">expected_value</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                 <span class="n">shap_values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                 <span class="n">X_test</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                 <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">)</span>
+</pre></div>
+<blockquote>
+<p>可以試著調整 index 數值(0~20)觀察測試集中不同資料點的解釋</p>
+</blockquote>
+<p><img alt="" src="../image/img17-5.png"/></p>
+<h3 id="shap-waterfall-plot">SHAP waterfall plot (單筆資料解釋)</h3>
+<p>瀑布圖是一種能夠以視覺方式呈現單一預測解釋結果的工具。瀑布圖的起點是模型輸出的基準值 E[f(z)]，代表模型在不看任何特徵狀況下預測的數值（𝜙0）。然後每一個條都記錄了每個特徵對於輸出模型預測值的正向（紅色）或負向（藍色）影響。全部累加起來得到輸出值（即所有特徵貢獻𝜙i和基準值𝜙0的總和），即等同於實際模型的預測。</p>
+<div class="codehilite"><pre><span></span><span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">waterfall_plot</span><span class="p">(</span><span class="n">shap</span><span class="o">.</span><span class="n">Explanation</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">shap_values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> 
+                                    <span class="n">base_values</span><span class="o">=</span><span class="n">explainer</span><span class="o">.</span><span class="n">expected_value</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">X_test</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>  
+                                    <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">))</span>
+</pre></div>
+<p><img alt="" src="../image/img17-6.png"/></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li>Avanti Shrikumar, et al. "<a href="https://arxiv.org/abs/1704.02685">Learning Important Features Through Propagating Activation Differences</a>." Arxiv, 2017.</li>
+<li>
+<p><a href="https://shap-lrjball.readthedocs.io/en/latest/generated/shap.DeepExplainer.html#shap-deepexplainer">shap.DeepExplainer</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/towards-data-science/interpretability-of-deep-learning-models-9f52e54d72ab">Interpretability of Deep Learning Models</a></p>
+</li>
+<li><a href="https://medium.com/@jimmywu0621/%E5%8F%AF%E8%A7%A3%E9%87%8B%EF%BD%81%EF%BD%89-%E4%BB%80%E9%BA%BC%E6%98%AFshap-5ec3953e3c5b">Additive Feature Attribution Methods</a></li>
+<li><a href="https://towardsdatascience.com/interpretability-of-deep-learning-models-9f52e54d72ab">Deep SHAP 鑽石範例</a></li>
+<li><a href="https://kknews.cc/zh-tw/code/n9lyk23.html">翻譯Deep SHAP 鑽石範例</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../16.神經網路的可解釋性:如何理解深度學習中的黑箱模型/" rel="prev" title="[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="18.CNN:卷積深度神經網路的解釋方法/" rel="next" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 18] CNN：卷積深度神經網路的解釋方法
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../assets/javascripts/application.245445c6.js"></script>
+<script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="../assets/javascripts/lunr/tinyseg.js"></script>
+<script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+<script src="../javascripts/extra.js"></script>
+</body>
+</html>

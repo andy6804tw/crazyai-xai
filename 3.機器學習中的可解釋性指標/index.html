@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 3] 機器學習中的可解釋性指標 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="../assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="../assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="../assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="../stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-3" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 3] 機器學習中的可解釋性指標
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1.XAI基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1.XAI基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../1.揭開模型的神秘面紗:為何XAI對機器學習如此重要/" title="[Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？">
+      [Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../2.從黑盒到透明化:XAI技術的發展之路/" title="[Day 2] 從黑盒到透明化：XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化：XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 3] 機器學習中的可解釋性指標
+      </label>
+<a class="md-nav__link md-nav__link--active" href="./" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="準確度與可解釋性的權衡">
+    準確度與可解釋性的權衡
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="可解釋性指標有哪些？">
+    可解釋性指標有哪些？
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-feature-importance" title="1. 特徵重要性 (Feature Importance)">
+    1. 特徵重要性 (Feature Importance)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-local-explanations" title="2. 局部解釋性 (Local Explanations)">
+    2. 局部解釋性 (Local Explanations)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-global-explanations" title="3. 全局解釋性（Global Explanations）">
+    3. 全局解釋性（Global Explanations）
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-structured-explanations" title="4. 結構化解釋性（Structured Explanations）">
+    4. 結構化解釋性（Structured Explanations）
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-error-analysis" title="5. 誤差分析（Error Analysis）">
+    5. 誤差分析（Error Analysis）
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3" title="迴歸問題的評估指標：">
+    迴歸問題的評估指標：
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4" title="分類問題的評估指標：">
+    分類問題的評估指標：
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-fidelity" title="6. 真實性驗證（Fidelity）">
+    6. 真實性驗證（Fidelity）
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_5" title="小結">
+    小結
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../4.LIME vs SHAP:哪種XAI解釋方法更適合你/" title="[Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？">
+      [Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../5.淺談XAI與傳統機器學習的區別/" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2.XAI在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2.XAI在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../6.非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用/" title="[Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../7.KNN與XAI:從鄰居中找出模型的決策邏輯/" title="[Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../8.解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性/" title="[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../9.基於樹狀結構的XAI方法:決策樹的可解釋性/" title="[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../10.Permutation Importance:從特徵重要性角度解釋整個模型行為/" title="[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../11.Partial Dependence Plot:探索特徵對預測值的影響/" title="[Day 11] Partial Dependence Plot：探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot：探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3.XAI常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3.XAI常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../12.LIME理論:如何用局部線性近似解釋黑箱模型/" title="[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論：如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../13.LIME實作:實戰演練LIME解釋方法/" title="[Day 13] LIME實作：實戰演練LIME解釋方法">
+      [Day 13] LIME實作：實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../14.SHAP理論:解析SHAP解釋方法的核心/" title="[Day 14] SHAP理論：解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論：解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../15.SHAP實作:實戰演練SHAP解釋方法/" title="[Day 15] SHAP實作：實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作：實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4.XAI在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4.XAI在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../16.神經網路的可解釋性:如何理解深度學習中的黑箱模型/" title="[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？">
+      [Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../17.解析深度神經網路:使用Deep SHAP進行模型解釋/" title="[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.CNN:卷積深度神經網路的解釋方法/" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+      [Day 18] CNN：卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21.Propagation-Based:探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22.CAM-Based:如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+      [Day 22] CAM-Based：如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23.Attention-Based:使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based：使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5.XAI在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5.XAI在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../24.LSTM的可解釋性:解析步態分類中的時序資料/" title="[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../25.XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作/" title="[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../26.智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據/" title="[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../27.XAI在NLP中的應用:以情感分析解釋語言模型/" title="[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用：以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6.XAI的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6.XAI的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../28.誤差分析和對抗樣本:如何利用XAI檢測模型的弱點/" title="[Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？">
+      [Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../29.XAI如何影響人類對技術的信任和接受程度/" title="[Day 29] XAI如何影響人類對技術的信任和接受程度？">
+      [Day 29] XAI如何影響人類對技術的信任和接受程度？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../30.XAI未來發展方向:向更可靠的機器學習模型邁進/" title="[Day30] XAI未來發展方向：向更可靠的機器學習模型邁進">
+      [Day30] XAI未來發展方向：向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="準確度與可解釋性的權衡">
+    準確度與可解釋性的權衡
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="可解釋性指標有哪些？">
+    可解釋性指標有哪些？
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-feature-importance" title="1. 特徵重要性 (Feature Importance)">
+    1. 特徵重要性 (Feature Importance)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-local-explanations" title="2. 局部解釋性 (Local Explanations)">
+    2. 局部解釋性 (Local Explanations)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-global-explanations" title="3. 全局解釋性（Global Explanations）">
+    3. 全局解釋性（Global Explanations）
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-structured-explanations" title="4. 結構化解釋性（Structured Explanations）">
+    4. 結構化解釋性（Structured Explanations）
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-error-analysis" title="5. 誤差分析（Error Analysis）">
+    5. 誤差分析（Error Analysis）
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3" title="迴歸問題的評估指標：">
+    迴歸問題的評估指標：
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4" title="分類問題的評估指標：">
+    分類問題的評估指標：
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-fidelity" title="6. 真實性驗證（Fidelity）">
+    6. 真實性驗證（Fidelity）
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_5" title="小結">
+    小結
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-3">[Day 3] 機器學習中的可解釋性指標</h1>
+<p>「可解釋性指標」是 XAI 中用來衡量模型可解釋性的評估標準。它們是用來確定模型如何解釋其預測的方式，以及如何在給定輸入後生成可解釋的結果。可解釋性指標可以根據特定的案例和需求而有所不同，但通常會考慮到以下幾個層面：</p>
+<ul>
+<li>精確度：模型的預測結果能否準確反映實際情況。</li>
+<li>一致性：模型在不同情況下的預測結果是否一致。</li>
+<li>可靠性：模型是否能夠可靠地處理所有輸入，包括異常值和噪聲數據。</li>
+<li>透明度：模型的內部運作是否清晰易懂，能夠被解釋。</li>
+<li>公平性：模型的預測結果是否公平，即是否存在對某些類別或群體的偏見。</li>
+<li>可解釋性：模型的預測結果是否能夠被解釋和理解，包括模型的特徵重要性，模型的決策過程以及模型輸出的可視化表示。</li>
+</ul>
+<h2 id="_1">準確度與可解釋性的權衡</h2>
+<p>在機器學習中，我們通常希望模型能夠同時達到高精度和可解釋性，但這兩者之間常常存在一個權衡。近年來隨著模型的精確度和複雜度不斷提高，但也帶來了模型的不透明性。為了更清楚地理解這個權衡，可以使用下面這張圖來比較。</p>
+<p><img alt="" src="../image/img3-1.png"/></p>
+<blockquote>
+<p>參考 DARPA 's explainable AI <a href="https://asd.gsfc.nasa.gov/conferences/ai/program/003-XAIforNASA.pdf">計畫</a> p. 23</p>
+</blockquote>
+<p>在這個平面圖中，X 軸代表模型的可解釋性，越靠右表示模型越容易解釋。Y 軸代表模型的複雜度，越高表示模型越複雜。通常情況下，複雜的模型（例如深度神經網絡）能夠實現更高的準確度，但解釋性較差。相反，較簡單的模型（例如線性迴歸）通常具有更好的解釋性，但是準確度可能不如複雜模型。</p>
+<p>幸運的是，近年來一些新的結構化解釋性指標和可視化技術正蓬勃發展中，可以幫助解釋深度學習和機器學習模型。因此，這些指標和可視化技術可以將複雜黑盒子模型移動到平面圖上的更高解釋性區域。</p>
+<h2 id="_2">可解釋性指標有哪些？</h2>
+<p>以下為各位整理一些常見的可解釋性指標，每種指標都有其專門的方法和技術來實現。這些可解釋性指標可以協助我們確定哪些機器學習模型可以被視為可解釋的，因為它們能夠產生可靠的預測，同時也能夠解釋模型預測的過程和結果。</p>
+<h3 id="1-feature-importance">1. 特徵重要性 (Feature Importance)</h3>
+<p>這種方法可用於對全局和局部進行解釋，以解釋單個特徵的貢獻和影響。然而該方法往往難以解釋特徵之間的相互作用和複雜關係。常用的計算方法包括基於樹的模型的重要性指標和線性迴歸中的係數等。</p>
+<p><img alt="" src="../image/img3-2.png"/></p>
+<p>此外特徵重要性指標中最典型例子就是敏感度分析（Sensitivity Analysis）。其目的是探討輸入特徵對模型輸出的影響程度，常用的方法有 Permutation Importance、Drop Column Importance 等方法。</p>
+<h3 id="2-local-explanations">2. 局部解釋性 (Local Explanations)</h3>
+<p>針對單筆資料預測的解釋方法，通常具有更高的彈性和細膩度，但可能會受到隨機性的影響，且無法解釋整個模型的行為。LIME 就是一種針對個別實例進行模型預測解釋的方法，它可以快速對複雜的黑盒模型進行解釋。透過對資料進行抽樣並使用黑盒模型來預測，然後根據實例之間的相似度對這些預測進行權重分配，從而學習出一個局部可解釋的線性模型。</p>
+<p><img alt="" src="../image/img3-3.png"/></p>
+<blockquote>
+<p>LIME論文：<a href="https://arxiv.org/pdf/1602.04938v3.pdf">“Why Should I Trust You?”
+Explaining the Predictions of Any Classifier</a></p>
+</blockquote>
+<h3 id="3-global-explanations">3. 全局解釋性（Global Explanations）</h3>
+<p>如果你看過前一篇文章，肯定對它不陌生。它可以解釋整個模型的預測行為，例如 Partial Dependence Plot（PDP）、Individual Conditional Expectation（ICE）、SHAP Summary Plot 和 Feature Interaction Plot等。這種解釋方法較為全面和綜觀，是 XAI 中最常見和最受歡迎的解釋方法。</p>
+<p><img alt="" src="../image/img3-4.png"/></p>
+<h3 id="4-structured-explanations">4. 結構化解釋性（Structured Explanations）</h3>
+<p>是指用結構化的方式將模型預測的過程和結果進行解釋。這種方法將預測的解釋分為多個步驟，將每個步驟的解釋呈現為一個結構化的形式，例如樹狀圖、流程圖或語法解釋等。透過這種方式，我們可以更清楚地了解模型的決策過程和關鍵因素，也能夠更容易地理解模型的預測結果。常見的結構化解釋性指標包括 Decision Tree、RuleFit 等。此方法雖然能夠生成可解釋的模型，易於理解和解釋。但是，這些模型往往較為簡單，可能無法擁有較高的預測能力。</p>
+<p>RuleFit 將線性模型和決策樹結合，同時學習特徵的重要性和特徵之間的交互作用，生成可解釋性強的模型。RuleFit 演算法的流程如下：</p>
+<ol>
+<li>資料預處理：對資料進行特徵提取和預處理，包括缺失值填充、特徵標準化等。</li>
+<li>基本樹模型生成：使用決策樹演算法生成一組基本樹模型，並提取出每個葉子節點的特徵。</li>
+<li>線性模型訓練：將基本樹模型中的葉子節點特徵作為新的輸入特徵，使用線性迴歸演算法訓練一個線性模型。</li>
+<li>預測：對於新的測試樣本，先使用基本樹模型將其映射到葉子節點上，並將葉子節點特徵作為輸入特徵，再使用訓練好的線性模型進行預測。</li>
+</ol>
+<blockquote>
+<p>RuleFit論文：<a href="https://arxiv.org/pdf/0811.1679.pdf">Predictive learning via rule ensembles</a></p>
+</blockquote>
+<h3 id="5-error-analysis">5. 誤差分析（Error Analysis）</h3>
+<p>透過誤差分析，我們可以了解模型在哪些情況下表現不佳，並且針對這些情況進行調整，以提高模型的準確度。可以用於解釋模型在測試數據集上的誤差原因，例如 Confusion Matrix、ROC Curve、Precision-Recall Curve。在機器學習中，常見的任務有迴歸和分類兩種。以下分別介紹這兩種任務常見的誤差評估指標：</p>
+<h4 id="_3">迴歸問題的評估指標：</h4>
+<ul>
+<li>均方誤差 (Mean Squared Error, MSE)：預測值與實際值的差的平方和的平均值，評估模型的整體預測能力。</li>
+<li>均方根誤差 (Root Mean Squared Error, RMSE)：MSE 開根號，與 MSE 相比更能反映預測值與實際值的真實差距。</li>
+<li>平均絕對誤差 (Mean Absolute Error, MAE)：預測值與實際值的差的絕對值的平均值，評估模型的整體預測能力。</li>
+<li>平均絕對百分比誤差（Mean Absolute Percentage Error, MAPE）：用來衡量迴歸模型的預測精度，其計算方式為預測值和真實值之間的絕對誤差佔真實值的百分比的平均值。通常來說，MAPE 的數值越小越好，一般認為 MAPE 小於 10% 表示模型的預測效果較好。</li>
+<li>決定係數 (R-squared)：評估模型與實際值之間的相關性，值越高代表模型的解釋能力越好，但也容易過度擬合。</li>
+</ul>
+<h4 id="_4">分類問題的評估指標：</h4>
+<ul>
+<li>混淆矩陣 (Confusion Matrix)：列出實際值與預測值的對應情況，便於評估模型的準確性、召回率等指標。</li>
+<li>準確率 (Accuracy)：預測正確的樣本數除以總樣本數，評估模型的整體預測能力。</li>
+<li>精確率 (Precision)：預測為正的樣本中實際為正的比例，評估模型對正樣本的預測能力。</li>
+<li>召回率 (Recall)：實際為正的樣本中預測為正的比例，評估模型對正樣本的覆蓋能力。</li>
+<li>F1值 (F1 Score)：精確率和召回率的加權調和平均數，綜合評估模型的預測能力。</li>
+</ul>
+<h3 id="6-fidelity">6. 真實性驗證（Fidelity）</h3>
+<p>真實性驗證可以提高模型的信心和可靠性，避免過度擬合和選擇性偏差等問題。通常建議真實性驗證使用的測試資料集的數量應該與訓練資料集的數量相當，並且可以使用交叉驗證等方法來進一步驗證模型的可靠性。除此之外它還可以評估模型解釋是否忠實反映模型的決策過程，常用的方法有 Anchors、Counterfactual Explanations 等。</p>
+<blockquote>
+<p>Anchors論文：<a href="https://homes.cs.washington.edu/~marcotcr/aaai18.pdf">Anchors: High-Precision Model-agnostic Explanations</a></p>
+</blockquote>
+<h2 id="_5">小結</h2>
+<p>今天學到了許多機器學習中的可解釋性指標，但是使用不同的可解釋性指標時，應該注意以下幾點：
+- 適用範圍：不同的可解釋性指標適用於不同的場景，應根據具體需求選擇。
+- 精度和穩定性：解釋性指標在不同場景下可能存在精度和穩定性問題，應慎重使用。
+- 解釋效果：可解釋性指標不僅應該能夠生成可解釋的結果，而且還應該能夠讓使用者更好地理解模型，避免出現誤解或誤解。
+- 結果呈現：不同的可解釋性指標生成的結果形式不同，需要根據需求選擇適當的呈現方式，以便於使用者理解。</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://www.researchgate.net/publication/356781652_DARPA_'s_explainable_AI_XAI_program_A_retrospective">DARPA 's explainable AI ( XAI ) program: A retrospective</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../2.從黑盒到透明化:XAI技術的發展之路/" rel="prev" title="[Day 2] 從黑盒到透明化：XAI技術的發展之路">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 2] 從黑盒到透明化：XAI技術的發展之路
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="../4.LIME vs SHAP:哪種XAI解釋方法更適合你/" rel="next" title="[Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../assets/javascripts/application.245445c6.js"></script>
+<script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="../assets/javascripts/lunr/tinyseg.js"></script>
+<script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+<script src="../javascripts/extra.js"></script>
+</body>
+</html>

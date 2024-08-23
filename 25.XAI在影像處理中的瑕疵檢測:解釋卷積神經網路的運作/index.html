@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="../assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="../assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="../assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="../stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-25-xai" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1.XAI基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1.XAI基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../1.揭開模型的神秘面紗:為何XAI對機器學習如此重要/" title="[Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？">
+      [Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../2.從黑盒到透明化:XAI技術的發展之路/" title="[Day 2] 從黑盒到透明化：XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化：XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../3.機器學習中的可解釋性指標/" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../4.LIME vs SHAP:哪種XAI解釋方法更適合你/" title="[Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？">
+      [Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../5.淺談XAI與傳統機器學習的區別/" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2.XAI在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2.XAI在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../6.非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用/" title="[Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../7.KNN與XAI:從鄰居中找出模型的決策邏輯/" title="[Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../8.解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性/" title="[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../9.基於樹狀結構的XAI方法:決策樹的可解釋性/" title="[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../10.Permutation Importance:從特徵重要性角度解釋整個模型行為/" title="[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../11.Partial Dependence Plot:探索特徵對預測值的影響/" title="[Day 11] Partial Dependence Plot：探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot：探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3.XAI常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3.XAI常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../12.LIME理論:如何用局部線性近似解釋黑箱模型/" title="[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論：如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../13.LIME實作:實戰演練LIME解釋方法/" title="[Day 13] LIME實作：實戰演練LIME解釋方法">
+      [Day 13] LIME實作：實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../14.SHAP理論:解析SHAP解釋方法的核心/" title="[Day 14] SHAP理論：解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論：解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../15.SHAP實作:實戰演練SHAP解釋方法/" title="[Day 15] SHAP實作：實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作：實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4.XAI在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4.XAI在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../16.神經網路的可解釋性:如何理解深度學習中的黑箱模型/" title="[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？">
+      [Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../17.解析深度神經網路:使用Deep SHAP進行模型解釋/" title="[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.CNN:卷積深度神經網路的解釋方法/" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+      [Day 18] CNN：卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21.Propagation-Based:探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22.CAM-Based:如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+      [Day 22] CAM-Based：如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23.Attention-Based:使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based：使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5.XAI在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5.XAI在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../24.LSTM的可解釋性:解析步態分類中的時序資料/" title="[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+      </label>
+<a class="md-nav__link md-nav__link--active" href="./" title="[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="[案例] 表面裂紋檢測">
+    [案例] 表面裂紋檢測
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resnet50" title="載入預訓練模型(ResNet50)">
+    載入預訓練模型(ResNet50)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="載入圖片">
+    載入圖片
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3" title="訓練模型">
+    訓練模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap" title="SHAP 解釋卷積神經網路的運作">
+    SHAP 解釋卷積神經網路的運作
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-partition-explainer" title="SHAP Partition Explainer">
+    SHAP Partition Explainer
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../26.智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據/" title="[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../27.XAI在NLP中的應用:以情感分析解釋語言模型/" title="[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用：以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6.XAI的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6.XAI的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../28.誤差分析和對抗樣本:如何利用XAI檢測模型的弱點/" title="[Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？">
+      [Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../29.XAI如何影響人類對技術的信任和接受程度/" title="[Day 29] XAI如何影響人類對技術的信任和接受程度？">
+      [Day 29] XAI如何影響人類對技術的信任和接受程度？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../30.XAI未來發展方向:向更可靠的機器學習模型邁進/" title="[Day30] XAI未來發展方向：向更可靠的機器學習模型邁進">
+      [Day30] XAI未來發展方向：向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="[案例] 表面裂紋檢測">
+    [案例] 表面裂紋檢測
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resnet50" title="載入預訓練模型(ResNet50)">
+    載入預訓練模型(ResNet50)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="載入圖片">
+    載入圖片
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3" title="訓練模型">
+    訓練模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap" title="SHAP 解釋卷積神經網路的運作">
+    SHAP 解釋卷積神經網路的運作
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap-partition-explainer" title="SHAP Partition Explainer">
+    SHAP Partition Explainer
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-25-xai">[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作</h1>
+<p>隨著鐵人賽進入尾聲，相信各位已經對可解釋人工智慧（XAI）領域有了一些初步的了解。在接下來的幾天中，我想透過一些實際的例子來介紹 XAI 的實際應用，藉此展示如何透過人工智慧來解決企業中的機器學習問題。今天要介紹的例子涉及影像辨識中的瑕疵檢測。在影像處理中，瑕疵檢測是一個相當重要的應用領域，通常用於檢查製造過程中的產品或材料，以確保它們的品質達到標準要求。這個應用領域在許多不同的行業中都具有關鍵的地位，包括製造業、醫療、石化產業等等。</p>
+<h2 id="_1">[案例] 表面裂紋檢測</h2>
+<p><a href="https://www.kaggle.com/datasets/arunrk7/surface-crack-detection?select=Positive">Surface Crack Detection Dataset</a> 是一個用於混凝土表面裂縫檢測的資料集。這個資料集被分成兩個類別，分別是正面（有裂縫）和負面（無裂縫）。這兩類圖像被存儲在不同的資料夾中，以便進行圖像分類。每個類別包含20000張圖像，總共有40000張圖像，每張圖像的解析度為227 x 227像素，並且是彩色圖像。</p>
+<p><img alt="" src="../image/img25-1.png"/></p>
+<h2 id="resnet50">載入預訓練模型(ResNet50)</h2>
+<p>在今天的實作中，我們將使用預訓練模型（ResNet50）來執行遷移學習（Transfer Learning），這是一種應用在分類任務上的學習方法。遷移學習是指，我們將先前訓練好的模型（通常是在大型數據集上訓練的模型）應用於新的任務或資料集，以提高模型的性能和準確度。這種方法通常能夠節省訓練新模型所需的大量時間和資源，同時能夠更快地達到良好的結果。首先使用 TensorFlow 建立了一個預訓練的 ResNet50 模型，並且將預訓練模型的權重設為不可訓練，並保留原始的特徵提取功能。由於 <code>include_top</code> 設定為 <code>False</code>，因此必須自己建立輸出的隱藏層與輸出層。因此我們自己建立了 <code>GlobalAveragePooling2D</code> 層將特徵圖的每個通道的平均值計算為一個數值。接著在模型的輸出層添加一個具有 sigmoid 激發函數的全連接層，用於二元分類。最後模型編譯，設定了優化器、損失函數和評估指標。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">layers</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.applications.resnet</span> <span class="kn">import</span> <span class="n">ResNet50</span><span class="p">,</span> <span class="n">preprocess_input</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span>
+
+<span class="n">img_size</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">'ResNet50'</span>
+
+<span class="c1"># 使用預訓練的ResNet50模型</span>
+<span class="n">pre_model</span> <span class="o">=</span> <span class="n">ResNet50</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="s1">'imagenet'</span><span class="p">,</span> <span class="n">include_top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># 將預訓練模型的權重設為不可訓練</span>
+<span class="n">pre_model</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># 隱藏層</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">pre_model</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="c1"># 輸出層</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'sigmoid'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">pre_model</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+<span class="c1"># 設定優化器</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="c1"># 編譯模型</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'binary_crossentropy'</span><span class="p">,</span>
+              <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">])</span>
+</pre></div>
+<h2 id="_2">載入圖片</h2>
+<p>模型搭建完成後，接著建立用於訓練和驗證的圖像資料生成器（ImageDataGenerator）。訓練資料生成器進行了資料增強（Data Augmentation）操作，包括隨機位移、水平翻轉等，並使用指定的圖像前處理函式。然而在驗證集的部分不需要進行資料增強，僅需要附上圖向前處理的函式即可。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.image</span> <span class="kn">import</span> <span class="n">ImageDataGenerator</span>
+
+<span class="c1"># 建立訓練資料生成器</span>
+<span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
+               <span class="n">width_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># 隨機水平位移圖像的範圍</span>
+               <span class="n">height_shift_range</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># 隨機垂直位移圖像的範圍</span>
+               <span class="n">horizontal_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># 隨機水平翻轉圖像</span>
+               <span class="n">preprocessing_function</span><span class="o">=</span><span class="n">preprocess_input</span><span class="p">,</span>  <span class="c1"># 圖像前處理函數</span>
+               <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.01</span>  <span class="c1"># 驗證資料集的比例</span>
+              <span class="p">)</span>
+
+<span class="c1"># 建立驗證資料生成器</span>
+<span class="n">validation_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span><span class="n">preprocessing_function</span><span class="o">=</span><span class="n">preprocess_input</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+<p>這些生成器從指定的資料夾中讀取圖像，並生成用於模型訓練和驗證的批次圖像數據。它們被設置為進行二元分類，其中類別標籤是<code>正</code>和<code>負</code>，並根據比例從原始資料中選擇訓練和驗證的子集。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 設定圖像的尺寸</span>
+<span class="n">img_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">)</span>
+
+<span class="c1"># 創建訓練資料生成器，從指定資料夾中讀取圖像，並進行資料增強</span>
+<span class="n">train_generator</span> <span class="o">=</span> <span class="n">train_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span>
+                 <span class="s1">'../input/surface-crack-detection'</span><span class="p">,</span>
+                 <span class="n">target_size</span><span class="o">=</span><span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">),</span>  <span class="c1"># 調整圖像尺寸</span>
+                 <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>  <span class="c1"># 批次大小</span>
+                 <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># 隨機打亂圖像順序</span>
+                 <span class="n">class_mode</span><span class="o">=</span><span class="s1">'binary'</span><span class="p">,</span>  <span class="c1"># 二元分類</span>
+                 <span class="n">subset</span><span class="o">=</span><span class="s1">'training'</span><span class="p">)</span>  <span class="c1"># 設定為訓練子集</span>
+
+<span class="c1"># 創建驗證資料生成器，從指定資料夾中讀取圖像</span>
+<span class="n">validation_generator</span> <span class="o">=</span>  <span class="n">validation_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span>
+                        <span class="s1">'../input/surface-crack-detection'</span><span class="p">,</span>
+                        <span class="n">target_size</span><span class="o">=</span><span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">),</span>  <span class="c1"># 調整圖像尺寸</span>
+                        <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>  <span class="c1"># 批次大小</span>
+                        <span class="n">class_mode</span><span class="o">=</span><span class="s1">'binary'</span><span class="p">,</span>  <span class="c1"># 二元分類</span>
+                        <span class="n">subset</span><span class="o">=</span><span class="s1">'validation'</span><span class="p">)</span>  <span class="c1"># 設定為驗證子集</span>
+</pre></div>
+<h2 id="_3">訓練模型</h2>
+<p>一切已經準備就緒，現在可以開始訓練模型了。因為我們是基於預訓練模型進行分類遷移訓練，所以我們只需要設定訓練的迭代次數為3，這樣可以快速達到良好的準確度並完成模型訓練。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 訓練模型</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_generator</span><span class="p">,</span>
+          <span class="n">epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+          <span class="n">validation_data</span><span class="o">=</span><span class="n">validation_generator</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="../image/img25-2.png"/></p>
+<h2 id="shap">SHAP 解釋卷積神經網路的運作</h2>
+<p>本系列中已介紹了許多 CNN 的解釋方法，如 Perturbation-Based、Gradient-Based、Propagation-Based、CAM-Based、Attention-Based 等。這裡我們採用 SHAP 套件進行 CNN 模型的解釋，然而 SHAP 提供許多種不同的解釋器，這次選用 Partition SHAP 方法，搭配圖像遮擋技術進行卷積神經網路的解釋。首先我們從資料集中載入一張具有瑕疵裂痕的影像，這將成為我們要解釋的圖片。接著使用 ResNet50 模型的預處理函數 <code>preprocess_input()</code> 來處理這張圖像，以確保圖像的數值範圍和格式符合模型的要求。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># 載入圖像</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">load_img</span><span class="p">(</span><span class="s1">'../input/surface-crack-detection/Positive/00001.jpg'</span><span class="p">,</span> <span class="n">target_size</span><span class="o">=</span><span class="p">(</span><span class="n">img_size</span><span class="p">,</span> <span class="n">img_size</span><span class="p">))</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">img_to_array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="c1"># 將載入的圖像轉換為數組形式</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 將圖像轉換為模型可接受的維度</span>
+</pre></div>
+<h3 id="shap-partition-explainer">SHAP Partition Explainer</h3>
+<p>Partition Explainer 是 SHAP 套件中的一種方法，用於解釋機器學習模型。針對 CNN 模型的解釋，它可以用於分析圖像分類模型的決策。例如對於一張圖像，我們可以使用 Partition Explainer 來評估不同區域中的像素對於模型的分類結果的影響。其背後的技術是透過 blur 或 inpaint 技術遮蓋圖像中的部分區塊，以查看圖像的哪些部分對預測有貢獻。</p>
+<p><img alt="" src="../image/img25-3.png"/></p>
+<p>首先定義了一個函數<code>f(X)</code>該函數複製輸入的圖像X，然後進行預處理，最後返回模型的輸出。接著定義了一個 <code>masker</code>，用於遮蓋輸入圖像的部分區域。這個 masker 提供了三種方法來遮蓋圖像的部分區域，分別為有：</p>
+<ul>
+<li>inpaint_telea： 使用了 Telea 算法嘗試根據周圍的像素值快速且有效地填補遮罩區域。</li>
+<li>inpaint_ns：使用了 Navier-Stokes 算法以填補圖像中的遮罩區域，適合用於複雜紋理。</li>
+<li>blur(kernel_xsize,kernel_xsize)： 假設使用 blur(15, 15)，則表示核的大小為15x15，它會考慮每個像素周圍的鄰域，將這些像素的值進行平均，以達到模糊化的效果。</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">shap</span>
+
+<span class="c1"># 包裝要被解釋的模型</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">preprocess_input</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span> <span class="c1"># 影像前處理</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+
+<span class="c1"># 定義一個 masker 用於遮罩圖像的部分區域</span>
+<span class="n">masker</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">maskers</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s2">"inpaint_telea"</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+<p>然後我們使用 Explainer() 函數來創建一個 Partition Explainer 的實例。在該函數中，必須輸入三個重要的參數值：</p>
+<ul>
+<li>model: 要被解釋的模型，即範例程式中的 <code>f(X)</code></li>
+<li>mask: 於使用blur或inpaint技術遮蓋圖像中的部分區塊</li>
+<li>output_names: 目標類別標籤名稱</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="c1"># 使用 Partition explainer 解釋模型</span>
+<span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">Explainer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">masker</span><span class="p">,</span> <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s2">"Positive(crack)"</span><span class="p">])</span>
+<span class="c1"># 估計 Shapely values</span>
+<span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">max_evals</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">shap</span><span class="o">.</span><span class="n">Explanation</span><span class="o">.</span><span class="n">argsort</span><span class="o">.</span><span class="n">flip</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+<p>我們將要被解釋的圖片放入 SHAP 解釋器後，即可針對計算的結果視覺化，並根據 Shapely values 計算結果查看在預測類別 <code>Positive(crack)</code> 情況下模型所關注的區域。從下圖可以觀察到在不同的影像中紅色的特徵表示將正向的影響輸出機率，會使值升高，藍色的則相反，會用來降低輸出機率。</p>
+<div class="codehilite"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">image_plot</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+</pre></div>
+<p><img alt="" src="../image/img25-4.png"/></p>
+<p>另外在計算 Shapely values 的時候 <code>max_evals</code> 參數代表在估算 SHAP 值時的最大評估次數。較大的值可能會提供更準確的 SHAP 值，但也會增加計算時間。下圖是將數值設為 5000 的結果，從結果的解釋圖中可以觀察到更詳細的解釋效果。</p>
+<p><img alt="" src="../image/img25-5.png"/></p>
+<blockquote>
+<p>大家也可以試試看其它不同的遮蓋圖像處理方法對於解釋效果有什麼不同的影響。</p>
+</blockquote>
+<p>本系列教學內容及範例程式都可以從我的 <a href="https://github.com/andy6804tw/2023-15th-ironman">GitHub</a> 取得！</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://shap.readthedocs.io/en/latest/example_notebooks/api_examples/plots/image.html">SHAP Document: Multi-class ResNet50 on ImageNet (TensorFlow)</a></li>
+<li><a href="https://www.kaggle.com/datasets/arunrk7/surface-crack-detection?select=Positive">Surface Crack Detection Dataset</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../24.LSTM的可解釋性:解析步態分類中的時序資料/" rel="prev" title="[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="../26.智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據/" rel="next" title="[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../assets/javascripts/application.245445c6.js"></script>
+<script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="../assets/javascripts/lunr/tinyseg.js"></script>
+<script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+<script src="../javascripts/extra.js"></script>
+</body>
+</html>

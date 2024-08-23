@@ -1,0 +1,648 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 20] Gradient-Based：利用梯度訊息解釋神經網路 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="../assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="../assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="../assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="../stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-20-gradient-based" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href=".." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1.XAI基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1.XAI基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../1.揭開模型的神秘面紗:為何XAI對機器學習如此重要/" title="[Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？">
+      [Day 1] 揭開模型的神秘面紗：為何XAI對機器學習如此重要？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../2.從黑盒到透明化:XAI技術的發展之路/" title="[Day 2] 從黑盒到透明化：XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化：XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../3.機器學習中的可解釋性指標/" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../4.LIME vs SHAP:哪種XAI解釋方法更適合你/" title="[Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？">
+      [Day 4] LIME vs. SHAP：哪種XAI解釋方法更適合你？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../5.淺談XAI與傳統機器學習的區別/" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2.XAI在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2.XAI在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../6.非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用/" title="[Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性？探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../7.KNN與XAI:從鄰居中找出模型的決策邏輯/" title="[Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI：從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../8.解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性/" title="[Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型：探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../9.基於樹狀結構的XAI方法:決策樹的可解釋性/" title="[Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法：決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../10.Permutation Importance:從特徵重要性角度解釋整個模型行為/" title="[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../11.Partial Dependence Plot:探索特徵對預測值的影響/" title="[Day 11] Partial Dependence Plot：探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot：探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3.XAI常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3.XAI常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../12.LIME理論:如何用局部線性近似解釋黑箱模型/" title="[Day 12] LIME理論：如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論：如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../13.LIME實作:實戰演練LIME解釋方法/" title="[Day 13] LIME實作：實戰演練LIME解釋方法">
+      [Day 13] LIME實作：實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../14.SHAP理論:解析SHAP解釋方法的核心/" title="[Day 14] SHAP理論：解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論：解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../15.SHAP實作:實戰演練SHAP解釋方法/" title="[Day 15] SHAP實作：實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作：實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4.XAI在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4.XAI在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../16.神經網路的可解釋性:如何理解深度學習中的黑箱模型/" title="[Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？">
+      [Day 16] 神經網路的可解釋性：如何理解深度學習中的黑箱模型？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../17.解析深度神經網路:使用Deep SHAP進行模型解釋/" title="[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.CNN:卷積深度神經網路的解釋方法/" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+      [Day 18] CNN：卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+      </label>
+<a class="md-nav__link md-nav__link--active" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#attribution" title="透過權重與輸入的特徵來決定 Attribution">
+    透過權重與輸入的特徵來決定 Attribution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-specific-class-saliency-sensitivity-analysis" title="Image-Specific Class Saliency (Sensitivity Analysis)">
+    Image-Specific Class Saliency (Sensitivity Analysis)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gradient-based-image-specific-class-saliency" title="Gradient-Based 方法實作 (Image-Specific Class Saliency)">
+    Gradient-Based 方法實作 (Image-Specific Class Saliency)
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resnet50" title="載入預訓練模型(ResNet50)">
+    載入預訓練模型(ResNet50)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-specific-class-saliency" title="Image-Specific Class Saliency 實作">
+    Image-Specific Class Saliency 實作
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21.Propagation-Based:探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22.CAM-Based:如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+      [Day 22] CAM-Based：如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23.Attention-Based:使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based：使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5.XAI在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5.XAI在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../24.LSTM的可解釋性:解析步態分類中的時序資料/" title="[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../25.XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作/" title="[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../26.智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據/" title="[Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用：解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../27.XAI在NLP中的應用:以情感分析解釋語言模型/" title="[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用：以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6.XAI的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6.XAI的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../28.誤差分析和對抗樣本:如何利用XAI檢測模型的弱點/" title="[Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？">
+      [Day 28] 對抗樣本的挑戰：如何利用XAI檢測模型的弱點？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../29.XAI如何影響人類對技術的信任和接受程度/" title="[Day 29] XAI如何影響人類對技術的信任和接受程度？">
+      [Day 29] XAI如何影響人類對技術的信任和接受程度？
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../30.XAI未來發展方向:向更可靠的機器學習模型邁進/" title="[Day30] XAI未來發展方向：向更可靠的機器學習模型邁進">
+      [Day30] XAI未來發展方向：向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#attribution" title="透過權重與輸入的特徵來決定 Attribution">
+    透過權重與輸入的特徵來決定 Attribution
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-specific-class-saliency-sensitivity-analysis" title="Image-Specific Class Saliency (Sensitivity Analysis)">
+    Image-Specific Class Saliency (Sensitivity Analysis)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gradient-based-image-specific-class-saliency" title="Gradient-Based 方法實作 (Image-Specific Class Saliency)">
+    Gradient-Based 方法實作 (Image-Specific Class Saliency)
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#resnet50" title="載入預訓練模型(ResNet50)">
+    載入預訓練模型(ResNet50)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-specific-class-saliency" title="Image-Specific Class Saliency 實作">
+    Image-Specific Class Saliency 實作
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-20-gradient-based">[Day 20] Gradient-Based：利用梯度訊息解釋神經網路</h1>
+<p>在深度學習中梯度訊息扮演著關鍵的角色，尤其在神經網路的訓練過程中。梯度代表了函數相對於參數的變化率，它告訴我們如何調整神經網路的權重和參數，以最小化或最大化一個特定的損失函數。因此梯度下降法是優化神經網路的主要手段之一，它依賴梯度訊息來更新模型的參數，使其更好地適應訓練數據。</p>
+<p>然而今天要談的是利用梯度訊息解釋神經網路，也就是當訓練一個神經網路後，透過計算神經網路對於輸入影像的梯度，我們就可以了解每個輸入特徵（例如像素）對於神經網路輸出的影響程度，並解釋神經網路的決策過程。以下是一些相關文獻，可以使用梯度訊息來表示輸入影像中每個特徵的重要度：</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1312.6034">Image-Specific Class Saliency</a>(Simonyan et al., 2014)：該方法計算指定的類別的輸出對輸入影像的損失函數梯度，得到一個反映輸入特徵影響的 Saliency Map。</li>
+<li><a href="https://arxiv.org/abs/1605.01713">Input X Gradient</a> (Shrikumar et al., 2016)：這種方法簡單地將輸入影像的梯度與輸入影像本身相乘，以計算每個像素的重要度。這可以顯示哪些像素對於模型的預測具有最大的影響。</li>
+<li><a href="https://arxiv.org/abs/1706.03825">SmoothGrad</a> (Smikov et al., 2017)：此方法將輸入影像進行 n 次微小擾動，然後計算這些擾動下的梯度，最後將它們平均，獲得穩定的 Saliency Map。</li>
+<li><a href="https://arxiv.org/abs/1703.01365">Integrated Gradients</a> (Sundararajan et al., 2017)：這是一種方法，通過對輸入特徵的整合來計算梯度，以評估每個特徵對於預測的影響。它提供了一種平滑的方法，可以顯示每個特徵對於預測的貢獻程度，而不僅僅是單一點的梯度。</li>
+<li><a href="https://arxiv.org/abs/1610.02391">Grad-CAM</a>（Ancona et al., 2016）：它結合了卷積神經網路中的梯度訊息和特徵圖，以生成一個更具視覺解釋性的熱圖，顯示哪些區域在圖像中觸發了特定類別的預測。</li>
+</ul>
+<h2 id="attribution">透過權重與輸入的特徵來決定 Attribution</h2>
+<p><code>Attribution</code> (歸因)是一個用於機器學習和深度學習領域的術語，它指的是試圖理解機器學習模型如何做出特定預測或決策的過程。以下使用一個簡單的線性迴歸例子，解釋 attribution 的概念。假設有兩個特徵會影響模型最終的輸出結果，那我想知道這兩個特徵的影響性分別有多大。通常可以使用偏微分（Partial Derivatives）來進行分析。這是數學上的一個方法，可以計算某個函數對於其中一個變數的偏導數，以評估該變數對函數值的影響。</p>
+<p>我們可以用一個簡單的例子來解釋如何計算特徵對模型輸出的影響程度。假設我們有一個簡單的線性模型如下：</p>
+<p><img alt="" src="../image/img20-2.png"/></p>
+<p>這個模型有兩個特徵，x1 和 x2，它們分別乘以不同的權重2和3。現在我們想知道 x1 和 x2 對 y 的影響程度。</p>
+<ol>
+<li>
+<p>首先，我們計算對x1的偏導數：</p>
+<p>∂y/∂x1 = 2</p>
+<p>這表示當 x1 增加1個單位時，y 會增加2個單位。所以，x1對 y 的影響是正向的，並且影響程度為2。</p>
+</li>
+<li>
+<p>接下來，我們計算對 x2 的偏導數：</p>
+<p>∂y/∂x2 = 3</p>
+<p>這表示當 x2 增加1個單位時，y 會增加3個單位。所以，x2 對 y 的影響也是正向的，並且影響程度為3。</p>
+</li>
+</ol>
+<p>根據這個例子，我們可以得出結論，x2 對 y 的影響程度比 x1 大，因為 <code>∂y/∂x2</code> 的絕對值大於 <code>∂y/∂x1</code> 的絕對值。這是一個極簡單的例子，實際上的模型可能更複雜，但這個方法可以用來評估不同特徵對模型輸出的相對影響程度。此外這個方法假設模型是線性的，並且特徵之間不存在交互作用，對於複雜的非線性模型，可以使用一階泰勒展開式把它近似成線性模型。</p>
+<h2 id="image-specific-class-saliency-sensitivity-analysis">Image-Specific Class Saliency (Sensitivity Analysis)</h2>
+<p>這裡介紹一個簡單的 Gradient-Based 方法，就是 Image-Specific Class Saliency(圖像特定類別顯著性)，也有些文獻稱它 Sensitivity Analysis (敏感度分析)。可以藉由計算輸入圖像的每個 pixel 的梯度，獲取 Saliency Map。整體步驟流程如下：</p>
+<ol>
+<li>模型推論：首先將一張影像餵入深度學習模型進行前向傳遞，獲得模型對該圖像的分類結果。</li>
+<li>計算梯度：針對我們感興趣的分類類別，計算該類別分數相對於輸入像素的梯度。這些梯度值反映了每個像素對於該類別預測的重要程度。</li>
+<li>視覺化結果：將計算得到的梯度視覺化呈現。可以選擇顯示絕對值的梯度，或者將正貢獻和負貢獻分開呈現，以突顯圖像中對於該類別預測影響最大的區域。這有助於理解模型為何將注意力集中在特定部分以做出特定的分類決策。</li>
+</ol>
+<p><img alt="" src="../image/img20-1.png"/></p>
+<p>對數學與推導過程有興趣的讀者可以參考以下這份電子書。在文中作者稱上述方法為 Vanilla Gradient。</p>
+<blockquote>
+<p>延伸閱讀：<a href="https://christophm.github.io/interpretable-ml-book/pixel-attribution.html#vanilla-gradient-saliency-maps">vanilla-gradient-saliency-maps</a></p>
+</blockquote>
+<h2 id="gradient-based-image-specific-class-saliency">Gradient-Based 方法實作 (Image-Specific Class Saliency)</h2>
+<p>在今天的範例中所使用的預訓練模型為 ResNet50。使用的方式跟昨天幾乎一模一樣，都是採用 <code>tf.keras.applications</code> 內建所提供的模型參數。ResNet50 突破了深度神經網路 Deep 的受限，引入了殘差學習的概念。通常隨著神經網路層數的增加，模型的性能會變得更好，但在一定深度後，模型會遭遇梯度消失或梯度爆炸的問題，導致訓練變得困難。因此 ResNet 引入 Residual Block（殘差模塊）允許訊息在不同層之間跳躍（即跳過某些層），進而解決了這個問題。</p>
+<p><img alt="" src="../image/img20-3.png"/></p>
+<blockquote>
+<p>ResNet 論文： <a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a> (CVPR 2016 best paper)</p>
+</blockquote>
+<h3 id="resnet50">載入預訓練模型(ResNet50)</h3>
+<p>首先使用 TensorFlow 載入 ResNet50 模型，將輸入張量(tensor)連接到預訓練的神經網路層，<code>imagenet</code> 表示使用在 ImageNet 資料集上預訓練的權重。<code>include_top=True</code> 表示輸出包括模型的最後分類層(全連接層)，此模型通常用於影像分類任務。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.applications.resnet50</span> <span class="kn">import</span> <span class="n">ResNet50</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Input</span>
+
+<span class="c1"># 建立一個輸入張量，指定圖像大小為224x224（RGB色彩通道）</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="c1"># 建立 ResNet50 模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ResNet50</span><span class="p">(</span><span class="n">input_tensor</span><span class="o">=</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="s1">'imagenet'</span><span class="p">,</span> <span class="n">include_top</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+<p>接著載入一張圖像，對其進行預處理。其中 <code>np.expand_dims()</code> 的目的是將圖像轉換為模型可接受的維度，這裡將圖像包裝在一個批次(batch)中，通常是一個批次只有一張圖像。最後使用 ResNet50 模型的預處理函數 <code>preprocess_input()</code> 來處理圖像，以確保圖像的數值範圍和格式符合模型的要求。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.applications.resnet50</span> <span class="kn">import</span> <span class="n">preprocess_input</span>
+
+<span class="c1"># 載入圖像</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">load_img</span><span class="p">(</span><span class="s1">'./dataset/cat_dog.jpg'</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">img_to_array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="c1"># 將載入的圖像轉換為數組形式</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 將圖像轉換為模型可接受的維度</span>
+<span class="c1"># 預處理圖像</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">preprocess_input</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+<p>確認輸入影像都完成處理過後，就可以使用已建立的 ResNet50 模型進行圖像分類預測，返回分類機率。最後再使用 <code>decode_predictions()</code> 解析取得預測結果，並取得類別名稱和相對應的預測機率。<code>pred_class_idx</code> 則是預測的標籤索引，最後模型解釋會需要用到它。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.applications.resnet50</span> <span class="kn">import</span> <span class="n">decode_predictions</span>
+
+<span class="c1"># 進行圖像分類預測</span>
+<span class="n">pred_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 返回分類機率</span>
+<span class="c1"># 解析預測結果</span>
+<span class="n">pred_class_idx</span> <span class="o">=</span> <span class="n">pred_proba</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 找到具有最高機率的類別索引</span>
+<span class="n">pred_class</span> <span class="o">=</span> <span class="n">decode_predictions</span><span class="p">(</span><span class="n">pred_proba</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 解析取得預測結果</span>
+</pre></div>
+<p>我們先來看看模型預測的結果。雖然這張影像同時有一隻貓和狗，但模型在神經網路中先抓取到狗的重要特徵(例如：鼻子、嘴巴)，因此最終模型預測 <code>bull_mastiff</code>(鬥牛獒)，該類別的機率值有 60%。有興趣的讀者，也可以跟昨天的模型進行比較。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">'uint8'</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+<span class="n">predicted_class_name</span> <span class="o">=</span> <span class="n">pred_class</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prediction: </span><span class="si">{</span><span class="n">predicted_class_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pred_class</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="../image/img20-4.png"/></p>
+<h3 id="image-specific-class-saliency">Image-Specific Class Saliency 實作</h3>
+<p>首先我們將此演算法包裝成一個函式方便呼叫。這一個函式主要接受兩個參數：</p>
+<ul>
+<li>image: 包含一組圖像的輸入數據，這些圖像是要計算特定類別顯著性的對象。</li>
+<li>target_class_idx: 指定要計算特定類別顯著性的目標類別的標籤索引。</li>
+</ul>
+<p>其中為了要進行梯度的計算，我們需要將輸入的圖片從 numpy array 轉換成 TensorFlow Tensor 格式。最後的 return 是計算目標類別機率 <code>probs</code> 對於輸入圖像 <code>image</code> 的梯度。<code>tape.gradient</code> 函數接受兩個參數，分別是梯度的目標和原影像，這裡我們希望計算目標是 <code>probs</code> 相對於輸入影像 <code>image</code>。</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">target_class_idx</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 將輸入的影像轉換為 TensorFlow 張量</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>  <span class="c1"># 用於計算梯度</span>
+        <span class="n">tape</span><span class="o">.</span><span class="n">watch</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 監控圖像，以便計算其梯度</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># 使用模型進行預測</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[:,</span> <span class="n">target_class_idx</span><span class="p">]</span>  <span class="c1"># 取得目標類別的預測機率</span>
+    <span class="k">return</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>  <span class="c1"># 計算機率對於影像的梯度並返回</span>
+</pre></div>
+<p>接著我們馬上將剛剛測試的 RestNet50 預測鬥牛獒的結果放進去此函式進行解釋。這段程式碼的目的是計算梯度並生成一個歸因遮罩（attribution mask）。首先呼叫 compute_gradients 函式，並傳入一個影像 x 和目標類別的索引  pred_class_idx。該函式會計算影像對於目標類別的梯度，並將結果儲存在  gradients 變數中。 接著使用 tf.squeeze 函式將 gradients 張量的多餘維度去除，然後使用 tf.math.abs 函式計算絕對值。這樣做是為了確保梯度的正負號不影響歸因遮罩的生成。最後使用 tf.reduce_sum 函式將計算結果沿著最後一個維度（通道軸）相加，生成最終的歸因遮罩，並將結果儲存在 attribution_mask 變數中。 </p>
+<div class="codehilite"><pre><span></span><span class="c1"># 計算機率對於影像的梯度</span>
+<span class="n">gradients</span> <span class="o">=</span> <span class="n">compute_gradients</span><span class="p">(</span>
+    <span class="n">image</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">target_class_idx</span><span class="o">=</span><span class="n">pred_class_idx</span><span class="p">)</span>
+<span class="c1"># 產生可解釋的遮罩</span>
+<span class="n">attribution_mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">gradients</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<p>最後讓我們瞧瞧結果。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+                        <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">'xticks'</span><span class="p">:[],</span> <span class="s1">'yticks'</span><span class="p">:[]})</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Original image'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Attribution Mask'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">attribution_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">inferno</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Overlay'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">attribution_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">inferno</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="../image/img20-5.png"/></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://arxiv.org/abs/1711.06104">Towards better understanding of gradient-based attribution methods for Deep Neural Networks</a></li>
+<li><a href="https://medium.com/ai-academy-taiwan/%E5%8F%AF%E8%A7%A3%E9%87%8B-ai-xai-%E7%B3%BB%E5%88%97-02-%E5%9F%BA%E6%96%BC%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%96%B9%E6%B3%95-gradient-based-b639932c1620">可解釋 AI (XAI) 系列 — 02 基於梯度的方法 (Gradient-Based): Sensitivity analysis, SmoothGrad, Integrated Gradients</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" rel="prev" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="21.Propagation-Based:探索反向傳播法的可解釋性/" rel="next" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../assets/javascripts/application.245445c6.js"></script>
+<script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="../assets/javascripts/lunr/tinyseg.js"></script>
+<script src="../assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+<script src="../javascripts/extra.js"></script>
+</body>
+</html>

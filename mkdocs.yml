@@ -1,0 +1,75 @@
+site_name: 全民瘋AI系列 [探索可解釋人工智慧]
+site_author: 10程式中
+# site_url: 
+extra_css:
+  - 'stylesheets/extra.css'
+extra_javascript:
+  - javascripts/extra.js
+theme:
+  name: material
+  language: 'zh-TW'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  palette:
+    primary: 'deep purple'
+    accent: 'deep purple'
+repo_url: https://github.com/andy6804tw/2020-12th-ironman
+use_directory_urls: false
+edit_uri: ""
+# Copyright
+copyright: 'Copyright © 2023 - 2024 10程式中'
+nav:
+  - '1. XAI 基礎與概念介紹':
+    - '[Day 1] 揭開模型的神秘面紗: 為何XAI對機器學習如此重要?': '1. 揭開模型的神秘面紗: 為何XAI對機器學習如此重要.md'
+    - '[Day 2] 從黑盒到透明化: XAI技術的發展之路': '2. 從黑盒到透明化: XAI技術的發展之路.md'
+  #   - '[Day 3] 機器學習中的可解釋性指標': '3. 機器學習中的可解釋性指標.md'
+  #   - '[Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?': '4. LIME vs SHAP:哪種XAI解釋方法更適合你?.md'
+  #   - '[Day 5] 淺談XAI與傳統機器學習的區別': '5. 淺談XAI與傳統機器學習的區別.md'
+  # - '2. XAI 在傳統機器學習中的應用':
+  #   - '[Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用': '6. 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用.md'
+  #   - '[Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯': '7. KNN與XAI:從鄰居中找出模型的決策邏輯.md'
+  #   - '[Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性': '8. 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性.md'
+  #   - '[Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性': '9. 基於樹狀結構的XAI方法:決策樹的可解釋性.md'
+  #   - '[Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為': '10. Permutation Importance:從特徵重要性角度解釋整個模型行為.md'
+  #   - '[Day 11] Partial Dependence Plot:探索特徵對預測值的影響': '11. Partial Dependence Plot:探索特徵對預測值的影響.md'
+  # - '3. XAI 常用工具介紹':
+  #   - '[Day 12] LIME理論:如何用局部線性近似解釋黑箱模型': '12. LIME理論:如何用局部線性近似解釋黑箱模型.md'
+  #   - '[Day 13] LIME實作:實戰演練LIME解釋方法': '13. LIME實作:實戰演練LIME解釋方法.md'
+  #   - '[Day 14] SHAP理論:解析SHAP解釋方法的核心': '14. SHAP理論:解析SHAP解釋方法的核心.md'
+  #   - '[Day 15] SHAP實作:實戰演練SHAP解釋方法': '15. SHAP實作:實戰演練SHAP解釋方法.md'
+  # - '4. XAI 在深度學習中的可解釋性':
+  #   - '[Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?': '16. 神經網路的可解釋性:如何理解深度學習中的黑箱模型?.md'
+  #   - '[Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋': '17.  解析深度神經網路:使用Deep SHAP進行模型解釋.md'
+  #   - '[Day 18] CNN:卷積深度神經網路的解釋方法': '18. CNN:卷積深度神經網路的解釋方法.md'
+  #   - '[Day 19] Perturbation-Based:如何用擾動方法解釋神經網路': '19. Perturbation-Based:如何用擾動方法解釋神經網路.md'
+  #   - '[Day 20] Gradient-Based:利用梯度訊息解釋神經網路': '20. Gradient-Based:利用梯度訊息解釋神經網路.md'
+  #   - '[Day 21] Propagation-Based:探索反向傳播法的可解釋性': '21. Propagation-Based:探索反向傳播法的可解釋性.md'
+  #   - '[Day 22] CAM-Based:如何解釋卷積神經網路': '22. CAM-Based:如何解釋卷積神經網路.md'
+  #   - '[Day 23] Attention-Based:使用注意力機制解釋CNN模型': '23. Attention-Based:使用注意力機制解釋CNN模型.md'
+  # - '5. XAI 在現實生活中的應用案例':
+  #   - '[Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測': '24. LSTM的可解釋性:解析步態分類中的時序資料.md'
+  #   - '[Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作': '25. XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作.md'
+  #   - '[Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷': '26. 智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據.md'
+  #   - '[Day 27] XAI在NLP中的應用:以情感分析解釋語言模型': '27. XAI在NLP中的應用:以情感分析解釋語言模型.md'
+  # - '6. XAI 的挑戰與未來':
+  #   - '[Day 28] XAI如何影響人類對技術的信任和接受程度?': '28. 誤差分析和對抗樣本:如何利用XAI檢測模型的弱點?.md'
+  #   - '[Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?': '29. XAI如何影響人類對技術的信任和接受程度?.md'
+  #   - '[Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進': '30. XAI未來發展方向:向更可靠的機器學習模型邁進.md'
+
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: false
+plugins:
+  - search
+  - mkpdfs:
+      design: design/report.css
+      author: Tsai Yi Lin
+      company: "10程式中"
+      toc_title: Table of contents
+      output_path: pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf

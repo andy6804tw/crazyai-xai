@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 11] Partial Dependence Plot:探索特徵對預測值的影響 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-11-partial-dependence-plot" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 11] Partial Dependence Plot:探索特徵對預測值的影響
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1. XAI 基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1. XAI 基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1. 揭開模型的神秘面紗:為何XAI對機器學習如此重要.html" title="[Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?">
+      [Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2. 從黑盒到透明化:XAI技術的發展之路.html" title="[Day 2] 從黑盒到透明化:XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化:XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3. 機器學習中的可解釋性指標.html" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4. LIME vs SHAP:哪種XAI解釋方法更適合你.html" title="[Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?">
+      [Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5. 淺談XAI與傳統機器學習的區別.html" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2. XAI 在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2. XAI 在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="6. 非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用.html" title="[Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7. KNN與XAI:從鄰居中找出模型的決策邏輯.html" title="[Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8. 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性.html" title="[Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9. 基於樹狀結構的XAI方法:決策樹的可解釋性.html" title="[Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="10. Permutation Importance:從特徵重要性角度解釋整個模型行為.html" title="[Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 11] Partial Dependence Plot:探索特徵對預測值的影響
+      </label>
+<a class="md-nav__link md-nav__link--active" href="11. Partial Dependence Plot:探索特徵對預測值的影響.html" title="[Day 11] Partial Dependence Plot:探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot:探索特徵對預測值的影響
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#partial-dependence" title="Partial Dependence 演算法流程">
+    Partial Dependence 演算法流程
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#partial-dependence_1" title="基於 Partial Dependence 的特徵重要性分析">
+    基於 Partial Dependence 的特徵重要性分析
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pdp" title="PDP 對於資料異質性的影響">
+    PDP 對於資料異質性的影響
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ice-plot" title="ICE Plot">
+    ICE Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sklearn-partial-dependence" title="sklearn 實作 Partial Dependence">
+    sklearn 實作 Partial Dependence
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3. XAI 常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3. XAI 常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="12. LIME理論:如何用局部線性近似解釋黑箱模型.html" title="[Day 12] LIME理論:如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論:如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="13. LIME實作:實戰演練LIME解釋方法.html" title="[Day 13] LIME實作:實戰演練LIME解釋方法">
+      [Day 13] LIME實作:實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="14. SHAP理論:解析SHAP解釋方法的核心.html" title="[Day 14] SHAP理論:解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論:解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="15. SHAP實作:實戰演練SHAP解釋方法.html" title="[Day 15] SHAP實作:實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作:實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4. XAI 在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4. XAI 在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="16. 神經網路的可解釋性:如何理解深度學習中的黑箱模型.html" title="[Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?">
+      [Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="17.  解析深度神經網路:使用Deep SHAP進行模型解釋.html" title="[Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18. CNN:卷積深度神經網路的解釋方法.html" title="[Day 18] CNN:卷積深度神經網路的解釋方法">
+      [Day 18] CNN:卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19. Perturbation-Based:如何用擾動方法解釋神經網路.html" title="[Day 19] Perturbation-Based:如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based:如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20. Gradient-Based:利用梯度訊息解釋神經網路.html" title="[Day 20] Gradient-Based:利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based:利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21. Propagation-Based:探索反向傳播法的可解釋性.html" title="[Day 21] Propagation-Based:探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based:探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22. CAM-Based:如何解釋卷積神經網路.html" title="[Day 22] CAM-Based:如何解釋卷積神經網路">
+      [Day 22] CAM-Based:如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23. Attention-Based:使用注意力機制解釋CNN模型.html" title="[Day 23] Attention-Based:使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based:使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5. XAI 在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5. XAI 在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="24. LSTM的可解釋性:解析步態分類中的時序資料.html" title="[Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="25. XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作.html" title="[Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="26. 智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據.html" title="[Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="27. XAI在NLP中的應用:以情感分析解釋語言模型.html" title="[Day 27] XAI在NLP中的應用:以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用:以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6. XAI 的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6. XAI 的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="28. 誤差分析和對抗樣本:如何利用XAI檢測模型的弱點.html" title="[Day 28] XAI如何影響人類對技術的信任和接受程度?">
+      [Day 28] XAI如何影響人類對技術的信任和接受程度?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="29. XAI如何影響人類對技術的信任和接受程度.html" title="[Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?">
+      [Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="30. XAI未來發展方向:向更可靠的機器學習模型邁進.html" title="[Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進">
+      [Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#partial-dependence" title="Partial Dependence 演算法流程">
+    Partial Dependence 演算法流程
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#partial-dependence_1" title="基於 Partial Dependence 的特徵重要性分析">
+    基於 Partial Dependence 的特徵重要性分析
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pdp" title="PDP 對於資料異質性的影響">
+    PDP 對於資料異質性的影響
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ice-plot" title="ICE Plot">
+    ICE Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sklearn-partial-dependence" title="sklearn 實作 Partial Dependence">
+    sklearn 實作 Partial Dependence
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-11-partial-dependence-plot">[Day 11] Partial Dependence Plot：探索特徵對預測值的影響</h1>
+<p>Partial Dependence Plot（PDP）是要觀察每一個自變數的變化是如何影響預測表現，它可以快速地分析自變數與目標變數之間的關係。而昨天所提的 Permutation Importance 是要觀察某個特徵會有多大的程度影響預測的錯誤率，進而取得重要程度排序。除此之外 PDP 也能考慮到特徵的交互作用，可以同時觀察兩個或以上的特徵合起來如何去影響預測結果。但以實務面來說為了可以視覺化預測結果，通常 PDP 最多會同時考慮兩個特徵，因為超過三個維度就比較難用視覺去呈現結果。今天討論的方法也是一種與模型無關的可解釋技術。</p>
+<p><img alt="" src="image/img11-1.png"/></p>
+<p>我們再以房價預測為例，可以從下面這八張 Partial Dependence 圖觀察哪些特徵是對於 y（房價）的影響是比較明顯的。其中越平坦的曲線代表該特徵越不重要，這意味著我不管怎樣變動該特徵的值對於預測結果都差不多，反之，上下起伏比較明顯的線代表該特徵極為重要。例如左上角的中位數收入，從中我們可以發現，該特徵對模型預測來說只要稍微變動一個單位對於輸出結果有明顯的影響。同時可以說明該特徵從美金 1.58 到 7.23 萬美元，隨著收入逐漸地增長，影響該地區的房價是正相關的。</p>
+<p><img alt="" src="image/img11-2.png"/></p>
+<blockquote>
+<p>我們可以透過 PDP 逐一觀察每個特徵跟輸出的關係。</p>
+</blockquote>
+<h2 id="partial-dependence">Partial Dependence 演算法流程</h2>
+<p>接下來要來討論 Partial Dependence 是如何被計算出來的。首先我們有一組訓練資料共有 d 個特徵，因此訓練一個模型 f 輸入為 x1~xd，目標是要預測 y。透過蒙地卡羅法希望可以觀察某個 xj 特徵的值它的相對應輸出是多少。因此我們可以從訓練集中抽取 m 筆資料樣本，並將要被觀察的特徵 xj 固定一個數值 t，而其他的特徵就用剛剛隨機抽出的樣本依序帶值進去。每次帶一筆進去後都會輸出一個 y，總共會得到 m 個結果最終在平均取來的數值就是 xj 對於 t 的情況下所估計的結果。</p>
+<p><img alt="" src="image/img11-6.png"/></p>
+<ol>
+<li>從測試集或資料集中，隨機取出一個樣本𝑧</li>
+<li>把𝑧的特徵 𝑥𝑗 改為 𝑡，其他特徵不變，得到新樣本𝑧′</li>
+<li>透過訓練好的模型，得到新樣本的預測值 ŷ′=𝑓(𝑧′)</li>
+<li>重複以上步驟 m 次，得到 m 個預測值 ŷ′1,ŷ′2,...,ŷ′m</li>
+<li>計算平均值，即為 𝑓(𝑥𝑗=𝑡) 的估計值。</li>
+<li>重複以上步驟，得到其他特徵的 PDP。</li>
+</ol>
+<blockquote>
+<p>至於t要有幾個取決於該特徵的上下界，並透過grid_resolution參數設定要在這範圍間取得幾組做為t。</p>
+</blockquote>
+<p>這裡舉個例子，我們想要用身高和體重兩個特徵去預測一個人的血壓。假設我們要觀察體重50公斤的血壓是多少，我們會先從資料集中採樣 m 筆資料(這裡有四筆，m=4)。接著從這四筆資料中固定體重都改成50，其餘身高保值不變並放入事先訓練好的模型進行預測得到 ŷ。最終把這四個模型預測的 ŷ 加總做平均就可以得到預測體重 50 公斤的人平均的血壓是多少。同樣以此概念我們可以得到隨著體重的變化(60kg, 70kg...)模型預測出來的血壓應該是多少。</p>
+<p><img alt="" src="image/img11-7.png"/></p>
+<h2 id="partial-dependence_1">基於 Partial Dependence 的特徵重要性分析</h2>
+<p>在之前的內容中，我們已經學到如果一個特徵的 Partial Dependence Plot（PDP） 呈現出「平坦」的曲線，代表該特徵對目標變數的影響不重要。但是，如何測量一個曲線的「平坦度」呢？其中一個方法是使用標準差來衡量其反平坦度。如果我們評估了函數 𝑓j(xj=vk)（其中k=1,...,K），則特徵 xj 的重要性可以定義為其標準差。計算完每個特徵的標準差後，其標準差越大的特徵我們可以視為越重要。</p>
+<p><img alt="" src="image/img11-8.png"/></p>
+<p>使用 PDP 尋找重要特徵時必須要注意資料的合理性，怎麼說呢？若 xj 與其他特徵存在某種關係，我們隨機抽取樣本填入可能抽到極不合理的特徵組合。例如上面的預測血壓例子當中可能會產生(身高180cm,體重40kg)的極端組合，這種情形現實生活中較難出現此案例，因此可能錯估結果。</p>
+<h2 id="pdp">PDP 對於資料異質性的影響</h2>
+<p>雖然 PDP 有助於可視化預測響應與一個或多個特徵之間的平均部分相依關係。但在存在實質交互作用影響下，部分響應關係可能是異質的（heterogeneities）。因此像 PDP 這樣的平均曲線可能會掩蓋建模關係的複雜性。所以我們可以透過 ICE 圖繪製個別觀測值的預測響應與特徵之間的函數關係來改進部分相依圖。在下圖 a 中，我們繪製了樣本中的 X2 與 Y 的散點圖。圖 b 顯示了預測特徵 X2 的擬合模型的部分相依圖。PDP 顯示就平均而言，X2 與預測的 Y 沒有顯著的相關性。但是從圖 a 中可以明顯看出，這個結論是錯誤的。很明顯 X2 與 Y 有關聯，只是 PDP 中的平均化掩蓋了這一發現。因此 PDP 的缺點在於可能掩蓋資料中的異質性。因此還有另一種變形是個體條件期望圖（ICE Plot），如圖 c 所示。ICE plot 可以清楚地顯示預測值和特徵 X2 之間的關係。從中我們可以發現，此模型的預測值在特徵 X2 的不同區域內呈現近似線性增加或減少的趨勢。</p>
+<p><img alt="" src="image/img11-9.png"/></p>
+<h2 id="ice-plot">ICE Plot</h2>
+<p>剛剛的例子中 PDP 在展示單一特徵對預測值的影響時，可能會掩蓋掉特徵和其他特徵之間的交互作用，進而限制了 PDP 的解釋能力。為了克服這個問題，在篇論文：<a href="https://arxiv.org/pdf/1309.6392.pdf">Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation</a> 作者提出了 ICE plot（Individual Conditional Expectation plot）的概念，可以更好地展示特徵之間的交互作用。ICE plot 類似於 PDP，但是它繪製的是每個觀測值的個別條線，因此可以更好地呈現特徵之間的差異和交互作用。</p>
+<ol>
+<li>從測試集或資料集中，隨機取出一個樣本𝑧</li>
+<li>把𝑧的特徵 𝑥𝑗 改為 𝑡，其他特徵不變，得到新樣本𝑧′</li>
+<li>透過訓練好的模型，得到新樣本的預測值 ŷ′=𝑓(𝑧′)</li>
+<li>重複以上步驟 m 次，得到 m 個預測值 ŷ′1,ŷ′2,...,ŷ′m</li>
+<li>將這 m 個預測值與原始樣本𝑧的特徵𝑥𝑗的值一起畫在圖上</li>
+<li>重複以上步驟，得到其他特徵的 ICE Plot。</li>
+</ol>
+<h2 id="sklearn-partial-dependence">sklearn 實作 Partial Dependence</h2>
+<p>在 sklearn 中有提供兩種 PDP 的 API 分別為 partial_dependence 和 PartialDependenceDisplay，兩者是用於呈現部分相依 (partial dependence) 的工具，但它們的使用方式和顯示效果有所不同。</p>
+<ul>
+<li>partial_dependence 是一個函數，可用來計算部分相依值並返回結果。</li>
+<li>PartialDependenceDisplay 可以直接繪製部分相依圖，透過視覺化方法比較不同特徵的影響。</li>
+</ul>
+<blockquote>
+<p>本日的內容建議在 Python 3.8 和 scikit-learn 1.2.2 版本以上執行。</p>
+</blockquote>
+<p><img alt="" src="image/img11-3.png"/></p>
+<blockquote>
+<p>參考: <a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.inspection">sklearn.inspection: Inspection</a></p>
+</blockquote>
+<p>今天的範例延續昨天的房價預測資料集，並先訓練好隨機森林迴歸模型。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># 載入加州地區房屋價格預測資料集</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># 切分資料集為訓練集和測試集</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 訓練隨機森林迴歸模型</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+<p>接著是本日實作重點，這裡採用 <code>PartialDependenceDisplay</code> 方法搭配 from_estimator 放入事先訓練好的 sklearn 模型，並放入測試資料集進行全域的模型解釋。以下是該方法常用到的參數，若想更進階使用可以參考官方<a href="https://scikit-learn.org/stable/modules/generated/sklearn.inspection.PartialDependenceDisplay.html">文件</a>。</p>
+<p>Parameters:
+- estimator: 已訓練的預測器物件，必須實作 predict、predict_proba 或 decision_function 方法。
+- X: 可放入訓練資料或是測試資料集，另外要注意是否有前處理。
+- features: 需要分析的特徵，可以為一個或多個特徵，若為一個則生成單特徵的部分相依圖，若兩個則生成2-way部分相依圖（kind='average'時才支援），每個元素可以是特徵索引或特徵名稱或特徵索引或特徵名稱的tuple。
+- categorical_features: PDP也支援類別型的特徵解釋，用法跟 features 一樣。
+- feature_names: 用於指定每個特徵的名稱，預設值為None。
+- grid_resolution: 網格解析度，數值越大越能呈現特徵與目標變數之間的關係，預設值為100。
+- percentiles: 用於限制PDP的X軸上下界，以百分位數表示，預設值為(0.05, 0.95)。
+- centered: 是否將ICE和PD線的起始點設為y軸原點從0開始，預設為False。
+- kind: 以字串格式設定，提供三種繪製形式 'average' 就是單純的PDP繪製;'individual' 繪製ICE plot;'both' 則代表同時繪製PD與ICE plot。預設為'average'。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="kn">import</span> <span class="n">PartialDependenceDisplay</span>
+
+<span class="n">PartialDependenceDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">X_test</span><span class="p">,</span> <span class="p">[</span><span class="s1">'MedInc'</span><span class="p">],</span> 
+                                        <span class="n">feature_names</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span> 
+                                        <span class="n">centered</span> <span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                                        <span class="n">kind</span><span class="o">=</span><span class="s1">'average'</span><span class="p">,</span> 
+                                        <span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                        <span class="n">grid_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+<p>輸出結果：
+<img alt="" src="image/img11-4.png"/></p>
+<p>試著將參數修改 <code>kind='both'</code>，我們就可以同時得到 ICE Plot 以及中間橘色線條就是每個樣本平均後的 PDP。</p>
+<p><img alt="" src="image/img11-5.png"/></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li>Friedman, Jerome H. "<a href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boostingmachine/10.1214/aos/1013203451.full">Greedy function approximation: A gradient boosting machine.</a>" Annals of statistics (2001): 1189-1232.</li>
+<li>Alex goldstein. (2014). <a href="https://arxiv.org/pdf/1309.6392.pdf">Peeking Inside the Black Box: Visualizing Statistical Learning with Plots of Individual Conditional Expectation</a>. Arxiv.</li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="10. Permutation Importance:從特徵重要性角度解釋整個模型行為.html" rel="prev" title="[Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="12. LIME理論:如何用局部線性近似解釋黑箱模型.html" rel="next" title="[Day 12] LIME理論:如何用局部線性近似解釋黑箱模型">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 12] LIME理論:如何用局部線性近似解釋黑箱模型
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="assets/javascripts/application.245445c6.js"></script>
+<script src="assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="assets/javascripts/lunr/tinyseg.js"></script>
+<script src="assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+<script src="javascripts/extra.js"></script>
+</body>
+</html>

@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 15] SHAP實作:實戰演練SHAP解釋方法 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-15-shapshap" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 15] SHAP實作:實戰演練SHAP解釋方法
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1. XAI 基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1. XAI 基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1. 揭開模型的神秘面紗:為何XAI對機器學習如此重要.html" title="[Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?">
+      [Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2. 從黑盒到透明化:XAI技術的發展之路.html" title="[Day 2] 從黑盒到透明化:XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化:XAI技術的發展之路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3. 機器學習中的可解釋性指標.html" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4. LIME vs SHAP:哪種XAI解釋方法更適合你.html" title="[Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?">
+      [Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5. 淺談XAI與傳統機器學習的區別.html" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2. XAI 在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2. XAI 在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="6. 非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用.html" title="[Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7. KNN與XAI:從鄰居中找出模型的決策邏輯.html" title="[Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8. 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性.html" title="[Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9. 基於樹狀結構的XAI方法:決策樹的可解釋性.html" title="[Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="10. Permutation Importance:從特徵重要性角度解釋整個模型行為.html" title="[Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="11. Partial Dependence Plot:探索特徵對預測值的影響.html" title="[Day 11] Partial Dependence Plot:探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot:探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3. XAI 常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3. XAI 常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="12. LIME理論:如何用局部線性近似解釋黑箱模型.html" title="[Day 12] LIME理論:如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論:如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="13. LIME實作:實戰演練LIME解釋方法.html" title="[Day 13] LIME實作:實戰演練LIME解釋方法">
+      [Day 13] LIME實作:實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="14. SHAP理論:解析SHAP解釋方法的核心.html" title="[Day 14] SHAP理論:解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論:解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 15] SHAP實作:實戰演練SHAP解釋方法
+      </label>
+<a class="md-nav__link md-nav__link--active" href="15. SHAP實作:實戰演練SHAP解釋方法.html" title="[Day 15] SHAP實作:實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作:實戰演練SHAP解釋方法
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap" title="SHAP 的優缺點">
+    SHAP 的優缺點
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap_1" title="[實作] SHAP 解釋分類模型">
+    [實作] SHAP 解釋分類模型
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="載入資料集">
+    載入資料集
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="切割資料集">
+    切割資料集
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#svm" title="訓練模型 (SVM 分類器)">
+    訓練模型 (SVM 分類器)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap_2" title="SHAP 解釋模型">
+    SHAP 解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1" title="1. 全局解釋模型">
+    1. 全局解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-shap-summary-plot" title="1.1 SHAP Summary Plot">
+    1.1 SHAP Summary Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-shap-dependence-plot" title="1.2 SHAP Dependence Plot">
+    1.2 SHAP Dependence Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2" title="2. 局部解釋模型">
+    2. 局部解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-shap-force-plot" title="2.1 SHAP Force plot">
+    2.1 SHAP Force plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22-shap-waterfall-plot" title="2.2 SHAP waterfall plot">
+    2.2 SHAP waterfall plot
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#link" title="[補充] link 參數設定時機">
+    [補充] link 參數設定時機
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4. XAI 在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4. XAI 在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="16. 神經網路的可解釋性:如何理解深度學習中的黑箱模型.html" title="[Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?">
+      [Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="17.  解析深度神經網路:使用Deep SHAP進行模型解釋.html" title="[Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18. CNN:卷積深度神經網路的解釋方法.html" title="[Day 18] CNN:卷積深度神經網路的解釋方法">
+      [Day 18] CNN:卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19. Perturbation-Based:如何用擾動方法解釋神經網路.html" title="[Day 19] Perturbation-Based:如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based:如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20. Gradient-Based:利用梯度訊息解釋神經網路.html" title="[Day 20] Gradient-Based:利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based:利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21. Propagation-Based:探索反向傳播法的可解釋性.html" title="[Day 21] Propagation-Based:探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based:探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22. CAM-Based:如何解釋卷積神經網路.html" title="[Day 22] CAM-Based:如何解釋卷積神經網路">
+      [Day 22] CAM-Based:如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23. Attention-Based:使用注意力機制解釋CNN模型.html" title="[Day 23] Attention-Based:使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based:使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5. XAI 在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5. XAI 在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="24. LSTM的可解釋性:解析步態分類中的時序資料.html" title="[Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="25. XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作.html" title="[Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="26. 智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據.html" title="[Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="27. XAI在NLP中的應用:以情感分析解釋語言模型.html" title="[Day 27] XAI在NLP中的應用:以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用:以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6. XAI 的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6. XAI 的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="28. 誤差分析和對抗樣本:如何利用XAI檢測模型的弱點.html" title="[Day 28] XAI如何影響人類對技術的信任和接受程度?">
+      [Day 28] XAI如何影響人類對技術的信任和接受程度?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="29. XAI如何影響人類對技術的信任和接受程度.html" title="[Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?">
+      [Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="30. XAI未來發展方向:向更可靠的機器學習模型邁進.html" title="[Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進">
+      [Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap" title="SHAP 的優缺點">
+    SHAP 的優缺點
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap_1" title="[實作] SHAP 解釋分類模型">
+    [實作] SHAP 解釋分類模型
+  </a>
+<nav class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="載入資料集">
+    載入資料集
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2" title="切割資料集">
+    切割資料集
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#svm" title="訓練模型 (SVM 分類器)">
+    訓練模型 (SVM 分類器)
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shap_2" title="SHAP 解釋模型">
+    SHAP 解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1" title="1. 全局解釋模型">
+    1. 全局解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-shap-summary-plot" title="1.1 SHAP Summary Plot">
+    1.1 SHAP Summary Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-shap-dependence-plot" title="1.2 SHAP Dependence Plot">
+    1.2 SHAP Dependence Plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2" title="2. 局部解釋模型">
+    2. 局部解釋模型
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#21-shap-force-plot" title="2.1 SHAP Force plot">
+    2.1 SHAP Force plot
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#22-shap-waterfall-plot" title="2.2 SHAP waterfall plot">
+    2.2 SHAP waterfall plot
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#link" title="[補充] link 參數設定時機">
+    [補充] link 參數設定時機
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-15-shapshap">[Day 15] SHAP實作：實戰演練SHAP解釋方法</h1>
+<p>昨天已經瞭解了 SHAP 套件背後的核心技術。SHAP 提供多種解釋工具，可應用於不同類型的模型：</p>
+<ul>
+<li>KernelExplainer（Kernel SHAP）： 適用於任何模型，它結合了 LIME 和 Shapley values 方法，透過估計 SHAP 值來提供解釋。</li>
+<li>TreeExplainer（Tree SHAP）： 適用於 tree-based 與 ensemble 系列模型，包括 XGBoost、LightGBM、CatBoost、scikit-learn 和 pyspark 樹相關的模型，透過 Tree SHAP 算法計算 SHAP 值。</li>
+<li>DeepExplainer（Deep SHAP）： 基於 SHAP 和 DeepLIFT 算法，專門用於計算深度學習模型的 SHAP 值，幫助解釋深度學習模型的預測。</li>
+<li>GradientExplainer： 基於 SHAP 和 Integrated Gradients 算法，用於近似計算深度學習模型的 SHAP 值，其速度會比 DeepExplainer 慢。</li>
+<li>LinearExplainer： 用於解釋線性模型的預測，適用於具有獨立特徵的線性模型。</li>
+</ul>
+<h2 id="shap">SHAP 的優缺點</h2>
+<p>Shapley values 為我們提供了特徵在實例上的邊際貢獻。它適用於分類和迴歸任務，且可用於表格數據、文字和圖像。以下為各位統整 SHAP 的優缺點：</p>
+<ul>
+<li>
+<p>SHAP 的優點：</p>
+<ul>
+<li>穩固的理論基礎： SHAP 繼承了博弈理論中 Shapley values 的理論基礎。</li>
+<li>效率提升： SHAP 確保模型預測值和平均預測值之間的差異在特徵之間公平分配，保證解釋的效率和合理性。</li>
+<li>通用性： SHAP 是一種通用的解釋工具，能夠應用於多種機器學習演算法和模型類型，不受模型選擇的限制。</li>
+<li>提供全局和局部解釋： SHAP 不僅能夠提供單一實例的解釋，還能夠計算全局的特徵重要性。</li>
+</ul>
+</li>
+<li>
+<p>SHAP 的缺點：</p>
+<ul>
+<li>計算時間與特徵數量成正比：當特徵的數量增多時，計算 SHAP 值所需的時間也會隨之增加。</li>
+<li>解釋複雜性：在解釋複雜模型時，SHAP 值可能無法完全捕捉模型的複雜內部關係，導致解釋的不完全性。</li>
+<li>數據分佈敏感： SHAP 值的計算可能對數據分佈敏感，不同的數據分佈可能導致不同的解釋結果。</li>
+</ul>
+</li>
+</ul>
+<h2 id="shap_1">[實作] SHAP 解釋分類模型</h2>
+<p>本日範例一樣以一個糖尿病預測資料集訓練一個 SVM 分類器。接這透過 Kernel SHAP 對模型進行解釋。首先我們先載入今天範例的資料集，該資料集可以從 Kaggle 資料科學平台<a href="https://www.kaggle.com/datasets/mathchi/diabetes-data-set">取得</a>。</p>
+<h3 id="_1">載入資料集</h3>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># 讀取資料集</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'./diabetes.csv'</span><span class="p">)</span>
+</pre></div>
+<p>讓我們來瞧瞧 df_train 裡面的內容。我們可以發現該資料集有總共有 768 筆數據，每一筆資料有八個欄位資訊，其中包含模型的輸入與輸出。</p>
+<p><img alt="" src="image/img13-1.png"/></p>
+<p>這個資料集來自美國國家糖尿病和消化和腎臟疾病研究所。其目標是根據診斷測量來預測病人是否患有糖尿病。資料集的變數如下：</p>
+<ul>
+<li>Glucose：口服葡萄糖耐量測試中2小時的血漿葡萄糖濃度，用於測試糖尿病的診斷。</li>
+<li>BloodPressure：舒張壓(mm Hg)，血壓中的一個參數，用於衡量心臟在收縮時的壓力。</li>
+<li>SkinThickness：三頭肌皮膚褶皺厚度(mm)，用於衡量皮膚的脂肪層厚度。</li>
+<li>Insulin：2小時血清胰島素(mu U/ml)，用於評估胰島素水平，對糖尿病的診斷非常重要。</li>
+<li>BMI：身體質量指數，表示體重和身高的比例，用於評估體重狀況。</li>
+<li>DiabetesPedigreeFunction：糖尿病家族遺傳函數，用於衡量患有糖尿病的家族遺傳風險。</li>
+<li>Age：病人的年齡。</li>
+<li>Outcome：病人是否患有糖尿病(作為模型輸出)，值為0表示沒有糖尿病，值為1表示患有糖尿病。</li>
+</ul>
+<h3 id="_2">切割資料集</h3>
+<p>接下來從剛剛讀取進來的 df_train 資料集中，將所有的輸入特徵資料提取出來，作為模型的輸入 X。同時，我們從 df_train 中取得 <code>Outcome</code> 欄位的資料，作為模型的輸出 y，用來表示病人是否患有糖尿病。除此之外，我們也將所有輸入特徵的欄位名稱儲存到 <code>x_feature_names</code> 變數中，<code>y_label_names</code> 則是儲存輸出的標籤名稱，這兩個個變數將在後續 SHAP 模型解釋的過程中使用。最後透過 <code>train_test_split</code> 方法切割訓練集與測試集。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">x_feature_names</span> <span class="o">=</span> <span class="n">df_train</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'Outcome'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">y_label_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'No'</span><span class="p">,</span> <span class="s1">'Yes'</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_train</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'Outcome'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="c1"># 移除y並取得剩下欄位資料</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">'Outcome'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="c1"># 取得病人糖尿病結果作為y</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+<h3 id="svm">訓練模型 (SVM 分類器)</h3>
+<p>我們將使用 SVM 建立一個分類模型，並使用訓練資料（X_train, y_train）進行訓練。由於 SHAP 解釋分類器需要模型預測每個類別的機率，因此在訓練 SVM 分類器時，需要添加參數 <code>probability=True</code>，以確保模型在推論時能夠輸出預測機率。</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="c1"># 建立 kernel='linear' 模型</span>
+<span class="n">model</span><span class="o">=</span><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 使用訓練資料訓練模型</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+<h3 id="shap_2">SHAP 解釋模型</h3>
+<p>接著我們要使用 SHAP 套件來進行模型的解釋。首先大家可以在終端機輸入以下指令安裝 SHAP 套件：</p>
+<div class="codehilite"><pre><span></span>pip install shap
+</pre></div>
+<p>首先載入 SHAP 函式庫並初始化 JavaScript 環境，以便在 Jupyter Notebook 環境中能夠顯示 SHAP 的解釋圖表和視覺化結果。</p>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">shap</span>
+
+<span class="n">shap</span><span class="o">.</span><span class="n">initjs</span><span class="p">()</span>
+</pre></div>
+<p>首先建立一個通用的 KernelExplainer 解釋器，並嘗試剖析剛剛所訓練的 SVM 分類模型。以下是常用的設定參數與說明：</p>
+<p>Parameters:
+- model：待解釋的模型。支援 sklearn 所封裝的模型，迴歸器可以使用 <code>model.predict</code>，分類器可以使用 <code>model.predict_proba</code>。
+- data：可採樣的資料集，用於產生隨機擾動抽樣的子集，此資料用於訓練 SHAP 解釋模型。
+- link：將SHAP簡單模型的預測輸出轉換為實際預測值的函數，提供兩種設定分別為 <code>identity</code> 和 <code>logit</code>。預設為 identity。</p>
+<p>以下程式將已經訓練好的模型引入，並透過呼叫 predict_proba 方法來計算預測機率。在 data 參數的部分我們從訓練集中取出前 50 筆資料，用以代表整體特徵值的分布。在 SHAP 中的 KernelExplainer 方法中，link 參數用於指定預測模型的連結函數（link function）。連結函數是將線性模型的輸出轉換為實際的預測值的函數。在不同的情況下，使用不同的連結函數可以更好地適應模型的性質。此範例是分類模型，因此可以選擇 <code>logit</code>，即表示每個計算出來的 Shapley values 再通過 sigmoid 函數即代表預測機率。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 使用 Kernel SHAP 解釋模型</span>
+<span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">KernelExplainer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">X_train</span><span class="p">[:</span><span class="mi">50</span><span class="p">],</span> <span class="n">link</span><span class="o">=</span><span class="s1">'logit'</span><span class="p">)</span>
+</pre></div>
+<blockquote>
+<p>KernelExplainer API 官方文檔可以從這裡<a href="https://shap-lrjball.readthedocs.io/en/latest/generated/shap.KernelExplainer.html">參考</a>。</p>
+</blockquote>
+<p>接著我們要使用 shap_values() 方法來估計 Shapley values 並對單筆資料進行解釋。以下是常用的設定參數與說明：</p>
+<p>Parameters:
+- X: 欲被解釋的資料。
+- nsamples: 用於構建解釋每個預測的代理模型的樣本數量。</p>
+<p>我們把之前先切割出來的測試集作為要被解釋的目標 Ｘ。接著設定 nsamples 為 100，這意味著我們將進行 100 次蒙地卡羅抽樣，從 KernelExplainer 設定的 data 中隨機擾動抽樣並建立一個 SHAP 簡單可解釋模型。對於每個隨機採樣的樣本，我們需要進行隨機擾動並進行模型推論（獲取 f() 的預測 y）。因此總共需要進行 <code>100*50</code> 次模型推論，以生成這 100 筆資料。然而 SHAP 官方建議盡量 data 的數量不要超過 100 筆數據，以避免過高的計算成本。原始碼可以從這裡<a href="https://github.com/shap/shap/blob/1ccbf672399d3467e4e4433894ed00e4f067e258/shap/explainers/_kernel.py#L104">參考</a>。</p>
+<div class="codehilite"><pre><span></span><span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">shap_values</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+<h3 id="1">1. 全局解釋模型</h3>
+<h3 id="11-shap-summary-plot">1.1 SHAP Summary Plot</h3>
+<p>SHAP Summary Plot 可以幫助了解模型的特徵重要性，幫助解釋模型的預測。如果某個特徵的 SHAP 值較大且穩定，則可以認為該特徵對模型預測的影響較大且較一致。反之，如果特徵的 SHAP 值較小且不穩定，則可能認為該特徵對模型預測的影響較小或不一致。</p>
+<ul>
+<li>點的顏色: Feature value 的大小，越紅越大、越藍越小</li>
+<li>X 軸: 該點對於 shap value 的影響，也就是對預測值的影響</li>
+<li>Y 軸: 每個特徵</li>
+</ul>
+<p>我們可以使用 <code>plot_type</code> 參數設置 <code>bar</code> 畫一張條形圖，不同顏色代表不同類別(以下範例藍色代表預測Yes的重要程度，紅色為No)，每個條形代表一個特徵，並顯示該特徵對模型預測的影響程度。在這個圖表中，每個特徵對於各個類別的影響被堆疊起來，以創建整體的特徵重要性圖。</p>
+<div class="codehilite"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">summary_plot</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">"bar"</span><span class="p">,</span> <span class="n">class_names</span><span class="o">=</span> <span class="n">y_label_names</span><span class="p">,</span> <span class="n">feature_names</span> <span class="o">=</span> <span class="n">x_feature_names</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="image/img15-1.png"/></p>
+<p>我們也可以觀察特定類別的 summary_plot。假設我想看模型對於預測 Yes 的重要程度，可以使用 <code>shap_values[1]</code> 的資料取得每筆測試集的 Shapley values 進行全局的解釋。以下圖來說我們可以得知模型在判斷是否罹患糖尿病情況下大多會看葡萄糖濃度(Glucose)，當數值越大越有機會罹患糖尿病。第二個重要的特徵為BMI，同樣也是當BMI越大越有機會罹患糖尿病。</p>
+<div class="codehilite"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">summary_plot</span><span class="p">(</span><span class="n">shap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="image/img15-2.png"/></p>
+<h3 id="12-shap-dependence-plot">1.2 SHAP Dependence Plot</h3>
+<p>SHAP 相依圖是一種散點圖，顯示了單一特徵對模型所做預測的影響。在這個例子中，當每位葡萄糖濃度越高相對應的 Shapley values 逐漸增加。</p>
+<ul>
+<li>每個點代表資料集中的一筆預測資料</li>
+<li>X 軸：該特徵的實際值</li>
+<li>Y 軸：該特徵的 SHAP 值，表示知道該特徵的值有多大程度上改變了該樣本預測的模型輸出。</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">dependence_plot</span><span class="p">(</span><span class="s1">'Glucose'</span><span class="p">,</span> <span class="n">shap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="image/img15-3.png"/></p>
+<p>SHAP 相依圖類似於部分相依圖，但考慮了特徵之間的交互作用，我們也可以觀察兩個變數的交互作用影響，可以在 <code>interaction_index</code> 參數中設定第二個特徵名稱，顏色對應到第二個特徵數值高低的影響。以下範例觀察BMI與皮脂厚度交互作用下對於 BMI 的 SHAP 值影響。</p>
+<div class="codehilite"><pre><span></span><span class="n">shap</span><span class="o">.</span><span class="n">dependence_plot</span><span class="p">(</span><span class="s1">'BMI'</span><span class="p">,</span> <span class="n">shap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">,</span> <span class="n">interaction_index</span><span class="o">=</span> <span class="s1">'SkinThickness'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="image/img15-4.png"/></p>
+<h3 id="2">2. 局部解釋模型</h3>
+<h3 id="21-shap-force-plot">2.1 SHAP Force plot</h3>
+<p>我們可以觀察單一筆資料在模型中的預測情況。在 SHAP 套件中，「Force Plot」方法提供了針對單一模型預測的解釋性呈現。在這個圖表中，我們可以清楚地看到各特徵對模型對特定輸入值的預測所做的貢獻。這種方法在進行錯誤分析或深入理解特定情況下的資料時非常有幫助。</p>
+<p>從以下圖表我們可以觀察：
+1. 模型在測試集中的第一筆資料預測NO的機率有0.11，Yes的機率有0.89
+2. base value: 代表模型在不看任何特徵狀況下預測的數值，在這個例子中，基準值 = 0.379。註：此基準值是有經過 sigmoid 函數。
+3. 每個特徵後面的數字是該筆資料的特徵值，例如 Age 49 歲。
+4. 紅色代表該特徵會增加判斷Yes的機率。而藍色代表該特徵會降低罹患糖尿病的機率。
+5. 箭頭的寬度表示該特徵對輸出的影響越大。
+6. Glucose、DiabetesPedigreeFunction、Age 這三個特徵明顯是判斷罹患糖尿病的重要因子。</p>
+<div class="codehilite"><pre><span></span><span class="c1"># 觀察測試集中第一筆資料預測為Yes的重要程度</span>
+<span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'測試集第 </span><span class="si">{</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> 筆模型預測結果: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">[[</span><span class="n">index</span><span class="p">],</span><span class="w"> </span><span class="p">:])[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">force_plot</span><span class="p">(</span><span class="n">explainer</span><span class="o">.</span><span class="n">expected_value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="s1">'logit'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="" src="image/img15-5.png"/></p>
+<h3 id="22-shap-waterfall-plot">2.2 SHAP waterfall plot</h3>
+<p>瀑布圖能夠以視覺方式呈現單一預測的解釋結果。因此在前面的結果基礎上，我們對測試集中的第一筆資料進行了單一預測解釋。瀑布圖的起點是模型輸出的基準值，接著每一條紀錄了每個特徵對於輸出模型預測值的正向（紅色）或負向（藍色）影響。累加起來最後再通過 Sigmoid 函數就是否罹患糖尿病的機率值了。</p>
+<div class="codehilite"><pre><span></span><span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">shap</span><span class="o">.</span><span class="n">waterfall_plot</span><span class="p">(</span><span class="n">shap</span><span class="o">.</span><span class="n">Explanation</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">shap_values</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> 
+                                    <span class="n">base_values</span><span class="o">=</span><span class="n">explainer</span><span class="o">.</span><span class="n">expected_value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="o">=</span><span class="n">X_test</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>  
+                                    <span class="n">feature_names</span><span class="o">=</span><span class="n">x_feature_names</span><span class="p">))</span>
+</pre></div>
+<p>從以下圖表我們可以觀察：
+1. f(x) 是模型預測的對數勝算(log odds)：2.408。
+2. E[f(x)] 是基準值 = 0.492。
+3. 左側是特徵名稱旁邊的灰色數值是代表該筆資料的輸入值。
+4. 在箭頭上的數值代表每個特徵的Shapley values貢獻值𝜙。
+5. 由於選擇 "logit" 連結函數，因此x軸的單位是log odds。
+6. 正值意代表該人罹患糖尿病的概率大於 0.5。
+7. 負值意代表該人罹患糖尿病的概率小於 0.5。</p>
+<p><img alt="" src="image/img15-6.png"/></p>
+<p>將線性模型的輸出通過一個稱為 S 形曲線（sigmoid 函數）的轉換，將線性模型的輸出映射到0和1之間，這樣預測結果就變成了二元類別。因此我們可以理解最後的輸出就相當於，模型根據輸入的特徵判斷結果是Yes的機率有多高。</p>
+<p><img alt="" src="image/img15-7.png"/></p>
+<h2 id="link">[補充] link 參數設定時機</h2>
+<p>在 SHAP 的 KernelExplainer 方法中，參數 link 可以選擇 <code>identity</code> 或 <code>logit</code> 作為 link function(連結函數)。以下是這兩種連結函數的區別以及它們的適用時機：</p>
+<p><strong>"identity" 連結函數：</strong>
+使用 identity 連結函數意味著模型的輸出直接被當作預測值，不進行額外的轉換。這在迴歸任務中較為常見，當你希望預測值與特徵之間的關係是線性的時候，可以選擇這個連結函數。</p>
+<p><strong>"logit" 連結函數：</strong>
+使用 logit 連結函數則將線性輸出轉換為對數比值（log odds），這在二元分類問題中比較常見。對數比值表示某個事件發生的對數機率與不發生的對數機率之比。"logit" 連結函數適用於那些希望模型預測機率時，同時考慮到機率值的變化幅度較大的情況，例如在邏輯迴歸模型中。</p>
+<p>選擇連結函數時，我們應該考慮模型的任務類型以及預測值和特徵之間的關係。如果你的模型是迴歸模型，並且你認為預測值與特徵之間的關係是線性的，那麼使用 "identity" 連結函數可能更適合。如果你的模型是分類模型，並且你希望考慮機率的變化，那麼 "logit" 連結函數可能更合適。</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://snyk.io/advisor/python/shap/functions/shap.KernelExplainer">shap.KernelExplainer</a></li>
+<li><a href="https://github.com/shap/shap">GitGub/shap</a></li>
+<li><a href="https://github.com/goodrahstar/cheatsheet-xai/blob/master/explainable_methods.jpg">Pros and Cons of CheatSheet-XAI</a></li>
+<li>
+<p><a href="https://blog.csdn.net/m0_59286668/article/details/128426336">Tensorflow-預訓練ResNet50可解釋性分析</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/analytics-vidhya/shap-part-2-kernel-shap-3c11e7a971b1">SHAP Part 2: Kernel SHAP</a></p>
+</li>
+<li><a href="https://towardsdatascience.com/explainable-ai-xai-with-shap-multi-class-classification-problem-64dd30f97cea">Explainable AI (XAI) with SHAP -Multi-Class Classification Problem</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="14. SHAP理論:解析SHAP解釋方法的核心.html" rel="prev" title="[Day 14] SHAP理論:解析SHAP解釋方法的核心">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 14] SHAP理論:解析SHAP解釋方法的核心
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="16. 神經網路的可解釋性:如何理解深度學習中的黑箱模型.html" rel="next" title="[Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="assets/javascripts/application.245445c6.js"></script>
+<script src="assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="assets/javascripts/lunr/tinyseg.js"></script>
+<script src="assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+<script src="javascripts/extra.js"></script>
+</body>
+</html>

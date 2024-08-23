@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="10程式中" name="author"/>
+<meta content="複製" name="lang:clipboard.copy"/>
+<meta content="已複製" name="lang:clipboard.copied"/>
+<meta content="ja" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="沒有符合的項目" name="lang:search.result.none"/>
+<meta content="找到 1 個符合的項目" name="lang:search.result.one"/>
+<meta content="找到 # 個符合的項目" name="lang:search.result.other"/>
+<meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
+<link href="assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
+<title>[Day 2] 從黑盒到透明化:XAI技術的發展之路 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<link href="assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
+<link href="assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
+<meta content="#7e57c2" name="theme-color"/>
+<script src="assets/javascripts/modernizr.74668098.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="stylesheets/extra.css" rel="stylesheet"/>
+</head>
+<body data-md-color-accent="deep-purple" data-md-color-primary="deep-purple" dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#day-2-xai" tabindex="1">
+        跳轉到
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a class="md-header-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              全民瘋AI系列 [探索可解釋人工智慧]
+            </span>
+<span class="md-header-nav__topic">
+              
+                [Day 2] 從黑盒到透明化:XAI技術的發展之路
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="搜尋" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            打字進行搜尋
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href="." title="全民瘋AI系列 [探索可解釋人工智慧]">
+<i class="md-icon"></i>
+</a>
+    全民瘋AI系列 [探索可解釋人工智慧]
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2020-12th-ironman" title="前往倉庫">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-1" id="nav-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-1">
+      1. XAI 基礎與概念介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-1">
+        1. XAI 基礎與概念介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1. 揭開模型的神秘面紗:為何XAI對機器學習如此重要.html" title="[Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?">
+      [Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        [Day 2] 從黑盒到透明化:XAI技術的發展之路
+      </label>
+<a class="md-nav__link md-nav__link--active" href="2. 從黑盒到透明化:XAI技術的發展之路.html" title="[Day 2] 從黑盒到透明化:XAI技術的發展之路">
+      [Day 2] 從黑盒到透明化:XAI技術的發展之路
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#xai" title="XAI 學習地圖">
+    XAI 學習地圖
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interpretable-models-vs-post-hoc-explanations" title="Interpretable Models vs. Post hoc Explanations">
+    Interpretable Models vs. Post hoc Explanations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#global-vs-local-explanations" title="Global vs. Local Explanations">
+    Global vs. Local Explanations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#model-agnostic-vs-model-specific" title="Model Agnostic vs. Model Specific">
+    Model Agnostic vs. Model Specific
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#python-xai" title="Python XAI 的套件有哪些？">
+    Python XAI 的套件有哪些？
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="小結">
+    小結
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3. 機器學習中的可解釋性指標.html" title="[Day 3] 機器學習中的可解釋性指標">
+      [Day 3] 機器學習中的可解釋性指標
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4. LIME vs SHAP:哪種XAI解釋方法更適合你.html" title="[Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?">
+      [Day 4] LIME vs. SHAP:哪種XAI解釋方法更適合你?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5. 淺談XAI與傳統機器學習的區別.html" title="[Day 5] 淺談XAI與傳統機器學習的區別">
+      [Day 5] 淺談XAI與傳統機器學習的區別
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      2. XAI 在傳統機器學習中的應用
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        2. XAI 在傳統機器學習中的應用
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="6. 非監督學習也能做到可解釋性-探索XAI在非監督學習中的應用.html" title="[Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用">
+      [Day 6] 非監督學習也能做到可解釋性?探索XAI在非監督學習中的應用
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7. KNN與XAI:從鄰居中找出模型的決策邏輯.html" title="[Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯">
+      [Day 7] KNN與XAI:從鄰居中找出模型的決策邏輯
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8. 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性.html" title="[Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性">
+      [Day 8] 解釋線性模型:探索線性迴歸和邏輯迴歸的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9. 基於樹狀結構的XAI方法:決策樹的可解釋性.html" title="[Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性">
+      [Day 9] 基於樹狀結構的XAI方法:決策樹的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="10. Permutation Importance:從特徵重要性角度解釋整個模型行為.html" title="[Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為">
+      [Day 10] Permutation Importance:從特徵重要性角度解釋整個模型行為
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="11. Partial Dependence Plot:探索特徵對預測值的影響.html" title="[Day 11] Partial Dependence Plot:探索特徵對預測值的影響">
+      [Day 11] Partial Dependence Plot:探索特徵對預測值的影響
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" id="nav-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-3">
+      3. XAI 常用工具介紹
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-3">
+        3. XAI 常用工具介紹
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="12. LIME理論:如何用局部線性近似解釋黑箱模型.html" title="[Day 12] LIME理論:如何用局部線性近似解釋黑箱模型">
+      [Day 12] LIME理論:如何用局部線性近似解釋黑箱模型
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="13. LIME實作:實戰演練LIME解釋方法.html" title="[Day 13] LIME實作:實戰演練LIME解釋方法">
+      [Day 13] LIME實作:實戰演練LIME解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="14. SHAP理論:解析SHAP解釋方法的核心.html" title="[Day 14] SHAP理論:解析SHAP解釋方法的核心">
+      [Day 14] SHAP理論:解析SHAP解釋方法的核心
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="15. SHAP實作:實戰演練SHAP解釋方法.html" title="[Day 15] SHAP實作:實戰演練SHAP解釋方法">
+      [Day 15] SHAP實作:實戰演練SHAP解釋方法
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      4. XAI 在深度學習中的可解釋性
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        4. XAI 在深度學習中的可解釋性
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="16. 神經網路的可解釋性:如何理解深度學習中的黑箱模型.html" title="[Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?">
+      [Day 16] 神經網路的可解釋性:如何理解深度學習中的黑箱模型?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="17.  解析深度神經網路:使用Deep SHAP進行模型解釋.html" title="[Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋">
+      [Day 17] 解析深度神經網路:使用Deep SHAP進行模型解釋
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18. CNN:卷積深度神經網路的解釋方法.html" title="[Day 18] CNN:卷積深度神經網路的解釋方法">
+      [Day 18] CNN:卷積深度神經網路的解釋方法
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="19. Perturbation-Based:如何用擾動方法解釋神經網路.html" title="[Day 19] Perturbation-Based:如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based:如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20. Gradient-Based:利用梯度訊息解釋神經網路.html" title="[Day 20] Gradient-Based:利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based:利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21. Propagation-Based:探索反向傳播法的可解釋性.html" title="[Day 21] Propagation-Based:探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based:探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22. CAM-Based:如何解釋卷積神經網路.html" title="[Day 22] CAM-Based:如何解釋卷積神經網路">
+      [Day 22] CAM-Based:如何解釋卷積神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23. Attention-Based:使用注意力機制解釋CNN模型.html" title="[Day 23] Attention-Based:使用注意力機制解釋CNN模型">
+      [Day 23] Attention-Based:使用注意力機制解釋CNN模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
+      5. XAI 在現實生活中的應用案例
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-5">
+        5. XAI 在現實生活中的應用案例
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="24. LSTM的可解釋性:解析步態分類中的時序資料.html" title="[Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測">
+      [Day 24] LSTM的可解釋性:從時序資料解析人體姿態預測
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="25. XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作.html" title="[Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作">
+      [Day 25] XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="26. 智慧工廠製程中的鋼材缺陷檢測:運用XAI解析數值型感測器數據.html" title="[Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷">
+      [Day 26] XAI在表格型資料的應用:解析智慧工廠中的鋼材缺陷
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="27. XAI在NLP中的應用:以情感分析解釋語言模型.html" title="[Day 27] XAI在NLP中的應用:以情感分析解釋語言模型">
+      [Day 27] XAI在NLP中的應用:以情感分析解釋語言模型
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      6. XAI 的挑戰與未來
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+        6. XAI 的挑戰與未來
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="28. 誤差分析和對抗樣本:如何利用XAI檢測模型的弱點.html" title="[Day 28] XAI如何影響人類對技術的信任和接受程度?">
+      [Day 28] XAI如何影響人類對技術的信任和接受程度?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="29. XAI如何影響人類對技術的信任和接受程度.html" title="[Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?">
+      [Day 29] 對抗樣本的挑戰:如何利用XAI檢測模型的弱點?
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="30. XAI未來發展方向:向更可靠的機器學習模型邁進.html" title="[Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進">
+      [Day 30] XAI未來發展方向:向更可靠的機器學習模型邁進
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">本頁目錄</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#xai" title="XAI 學習地圖">
+    XAI 學習地圖
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interpretable-models-vs-post-hoc-explanations" title="Interpretable Models vs. Post hoc Explanations">
+    Interpretable Models vs. Post hoc Explanations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#global-vs-local-explanations" title="Global vs. Local Explanations">
+    Global vs. Local Explanations
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#model-agnostic-vs-model-specific" title="Model Agnostic vs. Model Specific">
+    Model Agnostic vs. Model Specific
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#python-xai" title="Python XAI 的套件有哪些？">
+    Python XAI 的套件有哪些？
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1" title="小結">
+    小結
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference" title="Reference">
+    Reference
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
+<h1 id="day-2-xai">[Day 2] 從黑盒到透明化：XAI技術的發展之路</h1>
+<p>近年來人工智慧技術發展迅速，深度學習等技術的出現和應用已經帶來了很多驚人的成果，尤其是 ChatGPT 的出現更讓人們驚嘆不已。然而這些模型的黑箱特性一直是人工智慧領域中的一個重要議題。為了解決這個問題，越來越多的研究者開始關注解釋性人工智慧技術的發展。XAI 技術在過去幾年中經歷了長足的發展，從最初的可視化技術到現在的基於規則的解釋、深度學習可解釋性技術、模型過程可解釋技術等等，不斷地推陳出新。這些技術的不斷革新和提高，讓人們對於機器學習模型決策過程的理解更加深入和全面，也提高了機器學習模型的可信度和實用性。今天的內容我們將探討 XAI 技術的發展之路，並介紹幾個具有代表性的 XAI 技術。</p>
+<h2 id="xai">XAI 學習地圖</h2>
+<p>下圖取自於 <a href="https://ex.pegg.io">Jay Alammar</a> 的部落格，主要說明 XAI 技術中依據模型可解釋性的不同，分成了多種解釋方法。這些方法可分為模型本身具有可解釋性或是過於複雜難以解釋的情況。對於過於複雜的模型，我們需要透過事後分析技術來協助理解模型推論的邏輯。今天提到的所有名詞基本上彼此間都環環相扣，就讓我攘逐一為各位說明。</p>
+<p><img alt="" src="https://ex.pegg.io/Explainable-AI-cheat-sheet-v0.2.1080.png"/></p>
+<h2 id="interpretable-models-vs-post-hoc-explanations">Interpretable Models vs. Post hoc Explanations</h2>
+<p>XAI 方法可分為模型本身可以解釋（Interpretable Models）與模型訓練完事後解釋（Post hoc Explanations）兩種。其中，模型本身可以解釋的方法包括：線性迴歸、邏輯迴歸、決策樹、K-nearest neighbors、貝葉斯網絡模型。這些模型在自身設計上就已經具有一定的解釋性，因此可以直接透過模型本身來解釋預測結果。</p>
+<p><img alt="" src="image/img2-2.png"/></p>
+<p>模型本身可以解釋:
+- 線性迴歸 (Linear regression) / 邏輯迴歸 (Logistic regression)
+  - 線性迴歸和邏輯迴歸模型通常是基於線性方程來預測目標特徵的值，因此可以很容易地解釋模型權重和特徵之間的關係。
+- 決策樹 (Decision tree) 
+  - 決策樹是基於樹結構的模型，因此可以通過樹的分支路徑來解釋模型的決策過程。
+- K-nearest neighbors (KNN)
+  - 由於 KNN 算法本身就是基於距離計算的，因此可以解釋模型是基於哪些最近鄰居的資料進行預測的。
+- 貝葉斯網絡模型 (Bayesian Network Model)
+  - 通過機率模型表示特徵之間的條件依賴關係，可用於推論和預測。</p>
+<blockquote>
+<p>雖然隨機森林和XGBoost通常被認為是比較可解釋的tree-based系列模型，因為其結構相對簡單，可以直觀地理解每個決策的依據。但它們不算是Interpretable Models，因為其決策過程是由多個弱分類器或決策樹共同決定，其整體解釋性較難掌握，需要透過其他解釋方法來進行解釋。</p>
+</blockquote>
+<p>Post hoc Explanations 指的是在模型訓練完畢後，使用額外的解釋方法來理解模型的行為和決策過程。這些方法通常是使用一些數據可視化或統計技術，來顯示模型中不同特徵之間的關係，以及這些特徵對模型結果的影響程度。常見的 Post hoc 解釋方法包括 Permutation Importance、Partial Dependence Plot (PDP)、Accumulated Local Effects (ALE)、SHapley Additive exPlanations (SHAP)、Local Interpretable Model-agnostic Explanations (LIME) 等等。這些方法可以用於解釋各種不同類型的模型，包括決策樹、神經網絡、支持向量機等等。</p>
+<p>模型訓練完事後解釋:
+- Local Interpretable Model-agnostic Explanations (<a href="https://arxiv.org/abs/1602.04938">LIME</a>)
+- SHapley Additive exPlanations (<a href="https://arxiv.org/abs/1705.07874">SHAP</a>)</p>
+<h2 id="global-vs-local-explanations">Global vs. Local Explanations</h2>
+<p>剛所提到的模型訓練完事後解釋的方法又可分為 Global 解釋整個模型行為以及 Local 解釋單筆預測行為。Global 的方法的目的是理解模型對所有數據點的預測，而不僅僅是特定的數據點或觀測。這種方法通常涉及到解釋模型中的特徵重要性，即哪些特徵對於模型的預測影響最大。</p>
+<p><img alt="" src="image/img2-1.png"/></p>
+<p>解釋整個模型的行為，例如：
+- Permutation Importance：隨機重排特徵，計算對模型準確度的影響
+- Partial Dependence Plot (PDP)：顯示某個特徵對模型輸出的影響程度
+- Accumulated Local Effects (ALE)：估計某個特徵對模型輸出的平均影響程度
+- SHapley Additive exPlanations (SHAP)：計算每個特徵對預測值的貢獻程度</p>
+<p>解釋單筆預測行為，例如：
+- Local Interpretable Model-agnostic Explanations (LIME)：通過生成局部可解釋的模型來解釋單筆預測的結果。
+- SHapley Additive exPlanations (SHAP)：透過給每個特徵一個權重，計算其對預測結果的貢獻。
+- ICE（Individual Conditional Expectation）：與 PDP 類似，不同之處在於 ICE 將每個樣本視為一個獨立的個體，而 PDP 則將所有樣本視為同一個整體。</p>
+<blockquote>
+<p>SHAP 可以同時用於分析全局和局部貢獻，並提供有關每個特徵如何影響模型預測的詳細訊息。</p>
+</blockquote>
+<h2 id="model-agnostic-vs-model-specific">Model Agnostic vs. Model Specific</h2>
+<p>最後 XAI 的方法又可細分為 Model Agnostic 和 Model Specific 兩種。Model Agnostic 的方法是透過資料來解釋模型，例如先前提到的 LIME 和 SHAP 都是透過資料搭配方法來解釋模型的經典方法。</p>
+<p><img alt="" src="image/img2-3.png"/></p>
+<p>Model Agnostic 不考慮模型本身，只透過資料來解釋模型的方法：
+- LIME、SHAP、PDP、ICE、ALE
+- Anchor：透過找尋可以對預測結果產生重要影響的條件規則，來解釋模型的預測結果。
+- Surrogate Model：使用另一個模型來近似模擬原始模型，並以此模型來進行解釋。常用的模型包括線性模型、決策樹等。</p>
+<p>而 Model Specific 的方法則是針對特定模型來進行解釋。例如，決策樹系列的演算法透過樹的分支可知道每個節點的決策，而神經網路透過梯度下降法則可分析每個參數對於輸出的影響。這些方法有助於了解模型的內部運作，但缺點在於限制在特定模型上。</p>
+<p>Model Specific 考慮模型本身，解釋模型本身的方法：
+- Tree-based model：透過樹的分支可以知道每個節點的決策，以及每個變數對於決策的貢獻程度。
+- 神經網路：透過梯度下降法可以分析每個參數對於輸出的影響，或是使用類神經網路的可視化技術來解釋模型。
+- 模型融合方法(Stacking)：透過將多個模型進行結合，可以進一步提升預測準確度並探索每個模型對於整體預測的貢獻。</p>
+<h2 id="python-xai">Python XAI 的套件有哪些？</h2>
+<p>以下是一些常用的 Python 可解釋 AI 工具：</p>
+<ul>
+<li><a href="https://github.com/slundberg/shap">SHAP</a> (SHapley Additive exPlanations)：可解釋性機器學習工具，提供全局和局部的解釋，並透過 Shapley 值計算影響預測的因素貢獻度。</li>
+<li><a href="https://github.com/marcotcr/lime">LIME</a> (Local Interpretable Model-Agnostic Explanations)：一種局部解釋模型的工具，能夠解釋模型在單個預測中每個特徵的重要性，不考慮模型本身。</li>
+<li><a href="https://scikit-learn.org/stable/inspection.html">scikit-learn Inspection</a>： sklearn 套件中的 inspection 提供了解釋整個模型行為的方法，幫助理解模型的預測以及觀察特徵重要程度。</li>
+<li><a href="https://github.com/eli5-org/eli5">ELI5</a> (Explain Like I'm Five)：支持多種模型解釋，包括線性模型、決策樹、隨機森林等，可用於解釋全局和局部的預測。</li>
+<li><a href="https://github.com/interpretml/interpret">InterpretML</a>：一個針對機器學習模型的解釋工具，提供全局和局部的解釋，並且可以解釋多個模型之間的比較。</li>
+<li><a href="https://pair-code.github.io/what-if-tool/">What-if Tool</a>：Google 開發的一種交互式可解釋性工具，能夠展示特定輸入對預測結果的影響，並提供調整輸入以觀察預測結果的功能。</li>
+<li><a href="https://github.com/MAIF/shapash">Shapash</a>：是一個針對機器學習模型的自動化報告工具，可以幫助使用者快速解釋並理解模型的預測結果。</li>
+</ul>
+<p>除了上述幾個之外還包括 scikit-explain, Skope-rules, DTREEviz, H2O, Yellowbrick, PDPbox, Skater, Ciu, Dalex, Lofo, Anchor, PyCEbox, Alibi, Captum, AIX360, OmniXAI, L2X。這些都可以透過 Python 來輔助我們解釋訓練好的模型。</p>
+<blockquote>
+<p>本系列將會挑選幾個具有代表性的工具介紹給各位邦友</p>
+</blockquote>
+<h2 id="_1">小結</h2>
+<p>最後用這張圖表做個總結，並統整了今天所學習的內容。簡單來說，要解釋機器學習模型的結果，可以採用模型事後解釋或模型本身可解釋的方式。透過模型事後解釋，我們可以進一步了解模型在特定數據上的表現，以及模型背後的推論過程。而模型本身可解釋的模型則可以提供直接的解釋，因此可以更好地理解模型在不同情況下的預測結果。此外，解釋整個模型可以揭示模型的整體結構和特徵重要性，而解釋單筆預測可以幫助我們理解模型如何進行個別預測。透過資料解釋可以解釋各種不同類型的模型，而特定模型解釋則專注於針對特定類型的模型進行解釋。</p>
+<p><img alt="" src="image/img2-4.png"/></p>
+<p>明天我們就來談談這些關於機器學習中的可解釋性的指標</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://ex.pegg.io">Explainable AI Cheat Sheet by Jay Alammar (Arpeggio)</a></li>
+<li><a href="https://research-information.bris.ac.uk/ws/portalfiles/portal/305310441/ICAART_2022_226_CR.pdf">Developing and Experimenting on Approaches to Explainability in AI Systems</a></li>
+</ul>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="1. 揭開模型的神秘面紗:為何XAI對機器學習如此重要.html" rel="prev" title="[Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  上一頁
+                </span>
+                [Day 1] 揭開模型的神秘面紗:為何XAI對機器學習如此重要?
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="3. 機器學習中的可解釋性指標.html" rel="next" title="[Day 3] 機器學習中的可解釋性指標">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  下一頁
+                </span>
+                [Day 3] 機器學習中的可解釋性指標
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            Copyright © 2023 - 2024 10程式中
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="assets/javascripts/application.245445c6.js"></script>
+<script src="assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+<script src="assets/javascripts/lunr/tinyseg.js"></script>
+<script src="assets/javascripts/lunr/lunr.ja.js"></script>
+<script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+<script src="javascripts/extra.js"></script>
+</body>
+</html>

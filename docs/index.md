@@ -7,6 +7,6 @@
 [![](./image/award.png)](https://ithelp.ithome.com.tw/2020-12th-ironman/articles/6272)
 
 ## 回報錯誤與建議
-本系列文章若有問題或是內容建議都可以來 GitHub 中的 [issue](https://github.com/andy6804tw/2023-15th-ironman/issues) 提出。歡迎大家一同貢獻為這系列文章有更好的閱讀品質。
+本系列文章若有問題或是內容建議都可以來 GitHub 中的 [issue](https://github.com/andy6804tw/crazyai-xai/issues) 提出。歡迎大家一同貢獻為這系列文章有更好的閱讀品質。
 
 歡迎大家訂閱我的 [YouTube](https://www.youtube.com/channel/UCSNPCGvMYEV-yIXAVt3FA5A) 頻道。

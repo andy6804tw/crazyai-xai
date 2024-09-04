@@ -5,6 +5,7 @@ extra_css:
   - 'stylesheets/extra.css'
 extra_javascript:
   - javascripts/extra.js
+  - javascripts/analytics.js
 theme:
   name: material
   language: 'zh-TW'
@@ -14,7 +15,7 @@ theme:
   palette:
     primary: 'deep purple'
     accent: 'deep purple'
-repo_url: https://github.com/andy6804tw/crazyai-xai
+repo_url: https://github.com/andy6804tw/2023-15th-ironman
 # use_directory_urls: false
 edit_uri: ""
 # Copyright
@@ -68,9 +69,9 @@ markdown_extensions:
       permalink: false
 plugins:
   - search
-  # - mkpdfs:
-  #     design: design/report.css
-  #     author: Tsai Yi Lin
-  #     # company: "10程式中"
-  #     toc_title: Table of contents
-  #     output_path: pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf
+  - mkpdfs:
+      design: design/report.css
+      author: Tsai Yi Lin
+      # company: "10程式中"
+      toc_title: Table of contents
+      output_path: pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf

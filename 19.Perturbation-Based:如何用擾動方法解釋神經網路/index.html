@@ -474,6 +474,7 @@
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <h1 id="day-19-perturbation-based">[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路</h1>
+<p>範例程式：<a href="https://colab.research.google.com/github/andy6804tw/crazyai-xai/blob/main/code/19.Perturbation-Based：如何用擾動方法解釋神經網路.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 <p>如果想要了解一張圖片中哪些區域對於 CNN 神經網路的判斷結果具有影響力，可以參考基於擾動的 Perturbation-Based 方法。它有很多不同種的變形，其中最著名的是基於遮蔽擾動的方法，可以參考2014年於 Springer 發表的期刊論文：<a href="https://arxiv.org/abs/1311.2901">Visualizing and understanding convolutional networks</a>。在這篇論文中，提出反卷積(Deconvolution)的作者 Zeiler 透過遮蔽圖片的一部分來觀察模型的輸出，以確定圖片中哪些區域對於模型的分類是相對重要的。實際上，作者也運用遮蔽反卷積和反池化的方法，驗證了這種技術確實能夠提供 CNN 的可解釋性。</p>
 <blockquote>
 <p>參考論文：<a href="https://arxiv.org/abs/1311.2901">Visualizing and understanding convolutional networks</a></p>
@@ -721,5 +722,6 @@
 <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
 <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
 <script src="../javascripts/extra.js"></script>
+<script src="../javascripts/analytics.js"></script>
 </body>
 </html>

@@ -476,6 +476,7 @@
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <h1 id="day-27-xainlp">[Day 27] XAI在NLP中的應用：以情感分析解釋語言模型</h1>
+<p>範例程式：<a href="https://colab.research.google.com/github/andy6804tw/crazyai-xai/blob/main/code/27.XAI在NLP中的應用：以情感分析解釋語言模型.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 <p>近年來自然語言處理（NLP）領域取得了巨大的進展，主要歸功於大型語言模型（LLM）的崛起。這些模型，如 GPT、LLaMA 和 BLOOM 等，已經在多個 NLP 任務中取得了驚人的成就。目前 NLP 領域的主要趨勢是將大型語言模型微調以適應各種下游任務，例如對話機器人、機器翻譯、和情感分析等等。這種微調過程通常需要大量的標註數據，使得模型變得更具特定性，但同時也使得模型的內部運作變得更加難以理解。在今天的內容中我們將以情感分析為例，並透過可解釋工具 SHAP 來分析模型是如何辨識一段句子中情感的判斷依據。</p>
 <h2 id="sentiment-analysis">情感分析 (sentiment analysis)</h2>
 <p>情感分析（Sentiment analysis）是種自動化標註一段句子的情感（例如，積極、消極或中性）的過程。一個著名的情感分析數據集是 IMDB 影評數據集，其中包含了大量用戶對電影的評論，這些評論具有明顯的正面或負面情感。在今天的範例中可以輸入一段中文句子，模型可以從文字中判斷喜好程度，並根據其程度分配一個評分，從最低的1星到最高的5星不等。</p>
@@ -542,7 +543,7 @@
 </pre></div>
 <p><img alt="" src="../image/img27-4.png"/></p>
 <p>不過就我個人而言，SHAP套件在解釋中文文字方面稍嫌不足。這是因為 BERT 的 tokenizer 是以每個字元為單位的，因此 SHAP 是針對每個字元進行 Shapley values 的估算。如果想要針對詞語進行解釋，例如<code>親切</code>、<code>很棒</code>、<code>新鮮</code>等，可以考慮使用 LIME 來進行解釋。LIME 可以使用 <code>jieba</code> 分詞工具將一段話解析成多個詞語，然後再針對每個詞語進行重要性解釋。這種方法更適合針對詞語級別的解釋需求。</p>
-<p>本系列教學內容及範例程式都可以從我的 <a href="https://github.com/andy6804tw/2023-15th-ironman">GitHub</a> 取得！</p>
+<p>本系列教學內容及範例程式都可以從我的 <a href="https://github.com/andy6804tw/crazyai-xai">GitHub</a> 取得！</p>
 <h2 id="reference">Reference</h2>
 <ul>
 <li>
@@ -611,5 +612,6 @@
 <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
 <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
 <script src="../javascripts/extra.js"></script>
+<script src="../javascripts/analytics.js"></script>
 </body>
 </html>

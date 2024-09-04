@@ -496,6 +496,7 @@
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <h1 id="day-24-lstm">[Day 24] LSTM的可解釋性：從時序資料解析人體姿態預測</h1>
+<p>範例程式：<a href="https://colab.research.google.com/github/andy6804tw/crazyai-xai/blob/main/code/24.LSTM的可解釋性：從時序資料解析人體姿態預測.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 <p>在這個系列中，我們已經介紹了深度神經網路中的DNN（深度神經網路）和CNN（卷積神經網路），以及它們如何透過不同的方法進行模型解釋。今天，我們將深入探討如何使用 Deep SHAP 方法來解釋長短期記憶網路（LSTM）模型。LSTM 是一種特殊類型的循環神經網路（RNN），用於處理時間序列資料以及具有長期依賴性的序列任務。LSTM 的主要特點是它能夠有效地捕捉和記憶過去的訊息，以便在處理未來的時間步時進行預測。</p>
 <p>LSTM 之所以強大，是因為它具有以下關鍵結構和機制：
 - Cell State： LSTM具有記憶單元，可以存儲和檢索過去的訊息，這使得它能夠處理長序列資料，並保持對序列中先前訊息的適當記憶。
@@ -535,7 +536,7 @@
 </li>
 </ul>
 <div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">df_data</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'https://github.com/andy6804tw/2023-15th-ironman/raw/main/dataset/mHealth_subject1.csv'</span><span class="p">)</span>
+<span class="n">df_data</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'https://github.com/andy6804tw/crazyai-xai/raw/main/dataset/mHealth_subject1.csv'</span><span class="p">)</span>
 <span class="n">x_feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'acc_l_ankle_x'</span><span class="p">,</span><span class="s1">'acc_l_ankle_y'</span><span class="p">,</span><span class="s1">'acc_l_ankle_z'</span><span class="p">,</span><span class="s1">'gyro_l_ankle_x'</span><span class="p">,</span><span class="s1">'gyro_l_ankle_y'</span><span class="p">,</span><span class="s1">'gyro_l_ankle_z'</span><span class="p">]</span>
 <span class="n">y_feature_name</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
 <span class="n">y_label_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'站立'</span><span class="p">,</span> <span class="s1">'靜坐'</span><span class="p">,</span> <span class="s1">'平躺'</span><span class="p">,</span> <span class="s1">'走路'</span><span class="p">,</span> <span class="s1">'上樓'</span><span class="p">]</span>
@@ -774,5 +775,6 @@ y_test shape =  (75,)
 <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
 <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
 <script src="../javascripts/extra.js"></script>
+<script src="../javascripts/analytics.js"></script>
 </body>
 </html>

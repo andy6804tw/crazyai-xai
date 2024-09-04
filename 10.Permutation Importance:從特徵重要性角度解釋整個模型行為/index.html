@@ -428,6 +428,7 @@
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <h1 id="day-10-permutation-importance">[Day 10] Permutation Importance：從特徵重要性角度解釋整個模型行為</h1>
+<p>範例程式：<a href="https://colab.research.google.com/github/andy6804tw/crazyai-xai/blob/main/code/10.Permutation_Importance：從特徵重要性角度解釋整個模型行為.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 <p>全局模型解釋是試圖理解整個模型的行為，而不僅僅是對單個預測進行解釋。Permutation importance 方法就是一種廣泛用於評估機器學習模型特徵重要性的技術之一，而且它是一種與模型無關的可解釋技術。</p>
 <p>此模型解釋方法通常會返回每個特徵的重要性分數，分數越高則該特徵對於模型的影響性越大。因此當我們對其中一個特徵數值修改後對整體預測結果變動很大，可以推論該特徵可能是重要的。具體來說就是把一個特徵的某個值替換成另一個值之後，到底會對預測 error 有多大的影響。以預測區域房價為例，Permutation importance 算出來結果越小的話代表該特徵一點都不重要，有無它都沒關係。而計算出來越大的特徵，例如收入對於該地區的房屋價格預測是有很大的貢獻。</p>
 <p><img alt="" src="../image/img10-1.png"/></p>
@@ -558,5 +559,6 @@
 <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
 <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
 <script src="../javascripts/extra.js"></script>
+<script src="../javascripts/analytics.js"></script>
 </body>
 </html>

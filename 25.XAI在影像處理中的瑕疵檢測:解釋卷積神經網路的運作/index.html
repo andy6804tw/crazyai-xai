@@ -466,6 +466,7 @@
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
 <h1 id="day-25-xai">[Day 25] XAI在影像處理中的瑕疵檢測：解釋卷積神經網路的運作</h1>
+<p>範例程式：<a href="https://www.kaggle.com/code/andy6804tw/day-25-xai"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
 <p>隨著鐵人賽進入尾聲，相信各位已經對可解釋人工智慧（XAI）領域有了一些初步的了解。在接下來的幾天中，我想透過一些實際的例子來介紹 XAI 的實際應用，藉此展示如何透過人工智慧來解決企業中的機器學習問題。今天要介紹的例子涉及影像辨識中的瑕疵檢測。在影像處理中，瑕疵檢測是一個相當重要的應用領域，通常用於檢查製造過程中的產品或材料，以確保它們的品質達到標準要求。這個應用領域在許多不同的行業中都具有關鍵的地位，包括製造業、醫療、石化產業等等。</p>
 <h2 id="_1">[案例] 表面裂紋檢測</h2>
 <p><a href="https://www.kaggle.com/datasets/arunrk7/surface-crack-detection?select=Positive">Surface Crack Detection Dataset</a> 是一個用於混凝土表面裂縫檢測的資料集。這個資料集被分成兩個類別，分別是正面（有裂縫）和負面（無裂縫）。這兩類圖像被存儲在不同的資料夾中，以便進行圖像分類。每個類別包含20000張圖像，總共有40000張圖像，每張圖像的解析度為227 x 227像素，並且是彩色圖像。</p>
@@ -593,7 +594,7 @@
 <blockquote>
 <p>大家也可以試試看其它不同的遮蓋圖像處理方法對於解釋效果有什麼不同的影響。</p>
 </blockquote>
-<p>本系列教學內容及範例程式都可以從我的 <a href="https://github.com/andy6804tw/2023-15th-ironman">GitHub</a> 取得！</p>
+<p>本系列教學內容及範例程式都可以從我的 <a href="https://github.com/andy6804tw/crazyai-xai">GitHub</a> 取得！</p>
 <h2 id="reference">Reference</h2>
 <ul>
 <li><a href="https://shap.readthedocs.io/en/latest/example_notebooks/api_examples/plots/image.html">SHAP Document: Multi-class ResNet50 on ImageNet (TensorFlow)</a></li>
@@ -657,5 +658,6 @@
 <script src="../assets/javascripts/lunr/lunr.ja.js"></script>
 <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
 <script src="../javascripts/extra.js"></script>
+<script src="../javascripts/analytics.js"></script>
 </body>
 </html>

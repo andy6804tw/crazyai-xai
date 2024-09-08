@@ -18,7 +18,7 @@
 <meta content="[\uff0c\u3002]+" name="lang:search.tokenizer"/>
 <link href="../assets/images/favicon.png" rel="shortcut icon"/>
 <meta content="mkdocs-1.0.4, mkdocs-material-4.4.0" name="generator"/>
-<title>[Day 21] Propagation-Based：探索反向傳播法的可解釋性 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
+<title>[Day 18] CNN：卷積深度神經網路的解釋方法 - 全民瘋AI系列 [探索可解釋人工智慧]</title>
 <link href="../assets/stylesheets/application.0284f74d.css" rel="stylesheet"/>
 <link href="../assets/stylesheets/application-palette.01803549.css" rel="stylesheet"/>
 <meta content="#7e57c2" name="theme-color"/>
@@ -38,7 +38,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-<a class="md-skip" href="#day-21-propagation-based" tabindex="1">
+<a class="md-skip" href="#day-18-cnn" tabindex="1">
         跳轉到
       </a>
 <header class="md-header" data-md-component="header">
@@ -59,7 +59,7 @@
             </span>
 <span class="md-header-nav__topic">
               
-                [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+                [Day 18] CNN：卷積深度神經網路的解釋方法
               
             </span>
 </div>
@@ -91,7 +91,7 @@
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">
 <div class="md-header-nav__source">
-<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/crazyai-xai" title="前往倉庫">
 <div class="md-source__icon">
 <svg height="24" viewbox="0 0 24 24" width="24">
 <use height="24" width="24" xlink:href="#__github"></use>
@@ -120,7 +120,7 @@
     全民瘋AI系列 [探索可解釋人工智慧]
   </label>
 <div class="md-nav__source">
-<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/2023-15th-ironman" title="前往倉庫">
+<a class="md-source" data-md-source="github" href="https://github.com/andy6804tw/crazyai-xai" title="前往倉庫">
 <div class="md-source__icon">
 <svg height="24" viewbox="0 0 24 24" width="24">
 <use height="24" width="24" xlink:href="#__github"></use>
@@ -266,64 +266,49 @@
       [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
     </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="18.CNN:卷積深度神經網路的解釋方法/" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
-      [Day 18] CNN：卷積深度神經網路的解釋方法
-    </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="19.Perturbation-Based:如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
-      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
-    </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
-      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
-    </a>
-</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+        [Day 18] CNN：卷積深度神經網路的解釋方法
       </label>
-<a class="md-nav__link md-nav__link--active" href="21.Propagation-Based:探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
-      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+<a class="md-nav__link md-nav__link--active" href="./" title="[Day 18] CNN：卷積深度神經網路的解釋方法">
+      [Day 18] CNN：卷積深度神經網路的解釋方法
     </a>
 <nav class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">本頁目錄</label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#layer-wise-relevance-propagation" title="Layer-wise relevance propagation">
-    Layer-wise relevance propagation
+<a class="md-nav__link" href="#cnn" title="CNN 的優點">
+    CNN 的優點
   </a>
 <nav class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#1-basic-rule-lrp-0" title="1. Basic Rule (LRP-0):">
-    1. Basic Rule (LRP-0):
+<a class="md-nav__link" href="#1-local-connectivity" title="1. Local connectivity (結合影像特性)">
+    1. Local connectivity (結合影像特性)
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#2-epsilon-rule-lrp-" title="2. Epsilon Rule (LRP-ε):">
-    2. Epsilon Rule (LRP-ε):
+<a class="md-nav__link" href="#2-weight-sharing" title="2. Weight sharing (共用學習同一組參數)">
+    2. Weight sharing (共用學習同一組參數)
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#3-gamma-rule-lrp-" title="3. Gamma Rule (LRP-γ):">
-    3. Gamma Rule (LRP-γ):
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#_1" title="實驗結果">
-    實驗結果
+<a class="md-nav__link" href="#3-subsampling" title="3. Subsampling (池化運算)">
+    3. Subsampling (池化運算)
   </a>
 </li>
 </ul>
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#deeplift" title="DeepLIFT">
-    DeepLIFT
+<a class="md-nav__link" href="#explainable-cnn" title="Explainable CNN">
+    Explainable CNN
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explainable-cnn_1" title="Explainable CNN 技術">
+    Explainable CNN 技術
   </a>
 </li>
 <li class="md-nav__item">
@@ -335,12 +320,27 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="22.CAM-Based:如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+<a class="md-nav__link" href="../19.Perturbation Based如何用擾動方法解釋神經網路/" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
+      [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../20.Gradient Based利用梯度訊息解釋神經網路/" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+      [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../21.Propagation Based探索反向傳播法的可解釋性/" title="[Day 21] Propagation-Based：探索反向傳播法的可解釋性">
+      [Day 21] Propagation-Based：探索反向傳播法的可解釋性
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../22.CAM Based如何解釋卷積神經網路/" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
       [Day 22] CAM-Based：如何解釋卷積神經網路
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="23.Attention-Based:使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
+<a class="md-nav__link" href="../23.Attention Based使用注意力機制解釋CNN模型/" title="[Day 23] Attention-Based：使用注意力機制解釋CNN模型">
       [Day 23] Attention-Based：使用注意力機制解釋CNN模型
     </a>
 </li>
@@ -420,37 +420,37 @@
 <label class="md-nav__title" for="__toc">本頁目錄</label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#layer-wise-relevance-propagation" title="Layer-wise relevance propagation">
-    Layer-wise relevance propagation
+<a class="md-nav__link" href="#cnn" title="CNN 的優點">
+    CNN 的優點
   </a>
 <nav class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#1-basic-rule-lrp-0" title="1. Basic Rule (LRP-0):">
-    1. Basic Rule (LRP-0):
+<a class="md-nav__link" href="#1-local-connectivity" title="1. Local connectivity (結合影像特性)">
+    1. Local connectivity (結合影像特性)
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#2-epsilon-rule-lrp-" title="2. Epsilon Rule (LRP-ε):">
-    2. Epsilon Rule (LRP-ε):
+<a class="md-nav__link" href="#2-weight-sharing" title="2. Weight sharing (共用學習同一組參數)">
+    2. Weight sharing (共用學習同一組參數)
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#3-gamma-rule-lrp-" title="3. Gamma Rule (LRP-γ):">
-    3. Gamma Rule (LRP-γ):
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#_1" title="實驗結果">
-    實驗結果
+<a class="md-nav__link" href="#3-subsampling" title="3. Subsampling (池化運算)">
+    3. Subsampling (池化運算)
   </a>
 </li>
 </ul>
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#deeplift" title="DeepLIFT">
-    DeepLIFT
+<a class="md-nav__link" href="#explainable-cnn" title="Explainable CNN">
+    Explainable CNN
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explainable-cnn_1" title="Explainable CNN 技術">
+    Explainable CNN 技術
   </a>
 </li>
 <li class="md-nav__item">
@@ -465,57 +465,44 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset"><a class="md-content__icon pdf-download-btn" download href="../pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf" title="Download"><i class="fa fas fa-download"></i><small> PDF</small></a>
-<h1 id="day-21-propagation-based">[Day 21] Propagation-Based：探索反向傳播法的可解釋性</h1>
-<p>今天所要談 Propagation-Based 方法在 CNN 中的作用是透過計算梯度、反向傳播或不同層的特徵來量化每個像素或特徵對預測結果的影響。</p>
-<p>從昨天的 Gradient-based 方法我們了解到，可以使用梯度來估算每個輸入圖片的像素與最終分類結果之間的關係。換句話說，透過計算每個輸入圖片像素對於最終預測結果的影響，我們可以瞭解它們對於分類標籤的預測的貢獻程度。最終這些貢獻的總和等同於該圖像對於分類結果的預測。事實上這個概念可以在 CNN 的每一層都應用，即推斷每個特徵圖中的特徵與最終結果之間的相關性。這使得我們可以從最終輸出層開始回溯，而不僅僅針對輸入層計算梯度。以下為各位整理兩篇著名的 Propagation-Based 相關文獻：</p>
+<h1 id="day-18-cnn">[Day 18] CNN：卷積深度神經網路的解釋方法</h1>
+<p>在當今的深度學習領域中，卷積神經網路（CNN）已經成為許多電腦視覺任務的首選模型，例如圖像分類、物體偵測、語意分割、動作偵測等，這些重大突破都歸功於卷積神經網路的引入。然而儘管它們的強大性能，CNN 模型同樣被視為「黑盒」，難以理解其內部的決策過程。這種缺乏可解釋性可能限制了我們對模型的信任度，特別是在需要高度可解釋性和透明性的應用場景中，如醫學診斷和自動駕駛系統，這些應用更需要借助 XAI 技術來解釋模型的決策過程。</p>
+<p><img alt="" src="../image/img18-3.png"/></p>
+<h2 id="cnn">CNN 的優點</h2>
+<p>CNN 的優勢在於其能夠在不同的層次上學習特徵。較淺的卷積層具有較小的感知域，因此它們能夠捕捉到較局部的特徵，例如影像中的細微紋理或區域性特徵。而較深的卷積層則具有更大的感知域，這使得它們能夠學習到更加抽象的特徵，例如物體的整體形狀、結構或高層次的抽象概念。這種多層次的特徵學習使得CNN能夠在處理各種視覺任務時表現出色。CNN 具有以下幾點特性：</p>
 <ul>
-<li><a href="https://link.springer.com/book/10.1007/978-3-030-28954-6">Layer-wise Relevance Propagation</a> (LRP) (Bach et al., 2015)：透過泰勒分解來反向傳遞神經網路，以達到識別重要像素的方法。 </li>
-<li><a href="https://arxiv.org/abs/1704.02685">DeepLIFT</a>(Shrikumar et al., 2017)：是一種改進的反向傳播算法，用於生成熱圖以顯示神經網路的特徵重要性。SHAP 套件中的 Deep SHAP 就是基於 SHAP 和 DeepLIFT 算法。</li>
+<li>Local connectivity (結合影像特性)</li>
+<li>Weight sharing (共用學習同一組參數)</li>
+<li>Subsampling (池化運算)</li>
 </ul>
-<h2 id="layer-wise-relevance-propagation">Layer-wise relevance propagation</h2>
-<p>Layer-wise relevance propagation 是一種 Propagation-Based 方法的實例，用於理解深度神經網路對輸入數據的預測是如何形成的，並將其分解成單個輸入維度的相關性分數。這可以幫助我們理解神經網路中哪些部分對最終預測貢獻最大，對於模型的解釋和可解釋性非常有用。該方法被擴展到處理卷積神經網路中的特殊非線性操作，以更好地理解這些網路的工作原理。</p>
-<p><img alt="" src="../image/img21-1.png"/></p>
-<p>從下圖可見，左側輸入一張圖片，經過網路中的一系列神經元計算後得到輸出結果 xf。這個輸出 xf 等同於 Rf，實際上是每一層的特徵經過相關性計算後總和的結果。因此右側的部分表示從輸出結果開始，透過層層傳遞，將重要訊息回饋到最初的輸入圖片中。</p>
-<p><img alt="" src="../image/img21-2.png"/></p>
-<ol>
-<li>Input: 輸入是一張圖像，其中包含像素值 {xp}，這些像素值表示了圖像中的特徵。</li>
-<li>Forward Propagation: 將像素值 {xp} 通過神經網路進行正向傳播。在神經網路中，經過多個層次的計算，獲得一個得分 f(x)，該得分指示了類別<code>貓</code>的存在。這個得分是由輸出神經元 xf 表示的，xf 的值編碼了圖像中是否包含貓的訊息。</li>
-<li>Relevance Calculation: 接下來，計算輸出神經元 xf 的相對重要性（relevance），這個相對重要性記為 Rf，通常是 xf 的值本身。這表示輸出神經元對於類別<code>貓</code>的存在有多大的貢獻。</li>
-<li>Backpropagation of Relevance: 從頂層開始，將相對重要性 Rf 進行反向傳播，傳播到較低的層次。這些相對重要性（Rp）被分配給了所有像素 {xp}，表示了它們對於最終類別分類的貢獻。</li>
-<li>Relevance Redistribution: 最低隱藏層的最後一個神經元被認為對於更高層次的重要性較大，因此它將其分配的相對重要性重新分配到像素上。換句話說，這個神經元將影響圖像中某些特定區域的相對重要性。</li>
-<li>Heatmap Generation: 通過以上步驟，得到了像素 {xp} 的相對重要性 heatmap，這個熱圖顯示了圖像中哪些區域對於最終類別分類更加重要。熱圖可用於可視化模型對圖像的關注點，以及在圖像中哪些區域包含了有關類別<code>貓</code>的訊息。</li>
-</ol>
-<p>我們可以發現 LRP 方法主要是從最終輸出層逐步追溯到輸入層，逐層理解前層重要的神經元是如何影響輸出的，以此來獲得解釋性。下面公式 Ri 就是第 i 層節點的 Relevance，要計算它就是 Rj 第 j 層所有節點的 Relevance 並乘上一個權重，這個權重就是 xi 節點經過計算往下一層傳遞的數值。</p>
-<p><img alt="" src="../image/img21-3.png"/></p>
-<p>以下這三種不同的 LRP 規則是用來調整相對重要性在不同神經網路層次之間的傳播方式。它們有助於解釋模型的預測，並提供了對模型中不同層次神經元貢獻的不同理解。根據神經元所在的層次，選擇適當的 LRP 規則可以更好地理解模型的工作原理。</p>
-<h3 id="1-basic-rule-lrp-0">1. Basic Rule (LRP-0):</h3>
-<p><img alt="" src="../image/img21-4.png"/>
-應用層級: LRP-0 主要用於深層神經元，即神經網路中較高層次的神經元。</p>
-<p>運作原理: 在 LRP-0 中，相對重要性（relevance）會傳遞到較低層的神經元，而且傳遞的方式是基於某種權重分佈的。這種權重分佈可以基於神經網路的結構和連接來計算，以確保相對重要性能夠合理地傳遞到較低層的神經元，間接提高了較高層次的貢獻。</p>
-<h3 id="2-epsilon-rule-lrp-">2. Epsilon Rule (LRP-ε):</h3>
-<p><img alt="" src="../image/img21-5.png"/>
-應用層級: LRP-ε 通常應用於中層神經元，即神經網路中處於中間位置的神經元。</p>
-<p>運作原理: 在 LRP-ε 中，相對重要性會以更平均的方式傳遞到較低層的神經元，不像 LRP-0 那麼專注於少數高度相對重要的神經元。這種方法有助於平衡訊息的傳遞，以更全面地考慮中間層次的貢獻。</p>
-<h3 id="3-gamma-rule-lrp-">3. Gamma Rule (LRP-γ):</h3>
-<p><img alt="" src="../image/img21-6.png"/>
-應用層級: LRP-γ 通常應用於較淺層的神經元，即神經網路中較低層次的神經元。</p>
-<p>運作原理: LRP-γ 會更強調相對重要性在較低層神經元之間的分佈，這意味著相對重要性會更加集中於較低層的特定神經元。這有助於解釋模型為什麼會對某些輸入特徵產生強烈的反應，並且能夠將模型的決策過程更清晰地關聯到較低層次的特徵。</p>
-<h3 id="_1">實驗結果</h3>
-<p>讓我們來觀察不同計算方法對最終解釋性的影響。在下圖中，紅色的點代表對辨識結果有正向幫助，而藍色的點則代表有負向的影響。我們也可以觀察到以下情況：當使用 LRP-0 時，產生了相當多的雜訊；LRP-ε 的效果看起來相對不錯，並且減少了雜訊點的出現；而最右邊的 LRP-γ 則沒有出現對辨識結果有負面影響的點，因此沒有藍色點。最後論文又提了一種方法是在神經網路中依據不同層使用不同的計算方法，其中在最後的全連階層使用 LRP-0，在深層取得比較多特徵的地方使用 LRP-ε，在淺層的地方使用 LRP-γ。最終的結果看起來遠比三個單獨使用效果顯著。</p>
-<p><img alt="" src="../image/img21-7.png"/></p>
-<p>各位可以試試看這個互動<a href="https://lrpserver.hhi.fraunhofer.de/image-classification">網站</a>，裡面實現了 LRP 方法，並可以調整參數控制解釋性。</p>
-<p><img alt="" src="../image/img21-8.png"/></p>
-<h2 id="deeplift">DeepLIFT</h2>
-<p>DeepLIFT 是一種反向傳播的方法，類似於 LRP。每個單元 <code>i</code> 都被分配一個歸因值，表示該單元對於原始網路輸入 <code>x</code> 的激發相對於某個參考輸入 <code>x̄</code> 的相對效應。可以參考下方公式3：</p>
-<p><img alt="" src="../image/img21-9.png"/></p>
-<p>對於所有隱藏層單元，參考值 <code>z̄ji</code> 是通過對網路進行前向傳遞，使用基準輸入 <code>x̄</code>，並記錄每個單元的激發數值來確定的。與 LRP 一樣，基準通常選擇為零。相關性傳播過程可以通過下方公式4描述。</p>
-<p><img alt="" src="../image/img21-10.png"/></p>
-<p>簡單來說 DeepLIFT 理論的核心概念是將模型的輸入特徵歸因到每個特徵的貢獻度，以解釋模型的預測過程。如果要實作 DeepLIFT 可以參考原始論文在 GitHub 的開源套件 <a href="https://github.com/kundajelab/deeplift">DeepLIFT: Deep Learning Important FeaTures</a>。此外在 SHAP 套件提供的 DeepExplainer 解釋方法就是 DeepLIFT 和 Shapely values 的結合。詳細的實作內容可以參考 <a href="https://ithelp.ithome.com.tw/articles/10331443">[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋</a>。</p>
+<h4 id="1-local-connectivity">1. Local connectivity (結合影像特性)</h4>
+<p>CNN 的第一個優點在於它能夠結合影像特性，並採用區域相似性以及平滑變化的特性於模型架構中。這意味著 CNN 能夠捕捉到影像中局部區域的特徵，並將它們結合起來，以識別物體、模式或紋理等。</p>
+<h4 id="2-weight-sharing">2. Weight sharing (共用學習同一組參數)</h4>
+<p>第二個優點涉及到 CNN 的參數共享機制。在 CNN 中，同一組過濾器（filter）可以在整個影像上滑動以搜索相同的模式或特徵。這種共享權重的方式大大減少了需要訓練的參數數量，使得模型更加緊湊且計算效率更高。</p>
+<h4 id="3-subsampling">3. Subsampling (池化運算)</h4>
+<p>第三個優點是它使用的高效降維方法。透過 subsampling（例如池化層），CNN 可以將高解析度的影像轉換為較小的版本，同時保留了關鍵訊息。這樣的操作減少了需要訓練的神經網路參數數量，同時不會影響模型的性能。</p>
+<blockquote>
+<p>我們都知道CNN具有上述幾個特點，但要如何藉由這些優點來解釋內部的運作就是Explainable CNN的課題！</p>
+</blockquote>
+<h2 id="explainable-cnn">Explainable CNN</h2>
+<p>Explainable CNN（可解釋卷積神經網路）就是試圖理解 CNN 是如何做出判斷的。在圖像分類和物件辨識任務中，Explainable CNN 的目標是探索 CNN 模型對圖像的關注點是否符合人類的直覺判斷，並透過解釋性技術幫助改進模型的偏見和數據偏見，進而訓練出更優秀的模型。藉由解釋性技術，Explainable CNN 試圖找出影響模型最終判斷的關鍵部分，即模型在圖像中關注的區域或特徵。人類可以通過這些關鍵部分的樣式來解釋模型的決策，進而幫助做出更明智的決策。</p>
+<p>假設我們訓練了一個 CNN 模型來辨識圖像中的動物，並且模型對於狗的判斷表現非常準確。我們希望了解模型是如何進行這些判斷的。透過 Explainable CNN 我們可以找到模型對於判斷狗的關鍵區域，例如耳朵、眼睛和鼻子等部位。這樣的解釋可以讓我們更好地理解模型的決策過程，並檢視模型是否真正學到了辨識狗的正確特徵。</p>
+<p><img alt="" src="../image/img18-1.png"/></p>
+<p>這樣的解釋性技術有助於我們檢視模型的偏見，查看是否過度關注無關要緊的特徵或區域，以及數據的偏見，例如是否對某些類別的圖像有較大的偏好。透過理解模型的偏見以及決策方式，我們可以有針對性地調整模型的訓練過程，以獲得更公正和可靠的結果。</p>
+<h2 id="explainable-cnn_1">Explainable CNN 技術</h2>
+<p>可解釋卷積神經網路技術提供了多種方法和技巧來解釋卷積神經網路模型的決策過程和結果。以下是幾種常見的 Explainable CNN 技術：</p>
+<ul>
+<li>Perturbation-based Explanation（擾動解釋）：
+透過對輸入圖像進行微小的擾動來評估對模型預測結果的影響。它可以揭示模型對不同圖像區域的敏感性和重要性，並解釋模型的判斷過程。</li>
+<li>Gradient-based Explanation（梯度解釋）：計算輸入特徵對於模型輸出的梯度，來評估特徵的重要性。</li>
+<li>Propagation-based Explanation（傳播解釋）：基於反向傳播算法，分析模型中每個神經元對於輸出的貢獻。可以理解模型中不同神經元對於最終的決策有何影響。</li>
+<li>CAM-based Explanation（Class Activation Mapping 解釋）：此技術解釋模型對於不同類別的關注區域。CAM 會生成一張熱度圖，顯示模型對於特定類別的關注程度，幫助我們理解模型在圖像中關注的重要區域。</li>
+<li>Attention-Based Explanation（基於注意力的解釋）：這種方法關注於模型的注意力機制，即模型在處理輸入時關注哪些部分。它可以幫助我們理解模型如何對不同特徵或區域進行注意，以進行預測。</li>
+</ul>
+<p><img alt="" src="../image/img18-2.png"/></p>
 <h2 id="reference">Reference</h2>
 <ul>
-<li><a href="https://arxiv.org/abs/1512.02479">Explaining NonLinear Classification Decisions with Deep Taylor Decomposition</a></li>
-<li><a href="https://arxiv.org/abs/1711.06104">Towards better understanding of gradient-based attribution methods for Deep Neural Networks</a></li>
-<li><a href="https://medium.com/ai-academy-taiwan/%E5%8F%AF%E8%A7%A3%E9%87%8B-ai-xai-%E7%B3%BB%E5%88%97-03-%E5%9F%BA%E6%96%BC%E5%82%B3%E6%92%AD%E7%9A%84%E6%96%B9%E6%B3%95-propagation-based-layer-wise-relevance-propagation-1b79ce96042d">可解釋 AI (XAI) 系列 — 03 基於傳播的方法 (Propagation-Based): Layer-Wise Relevance Propagation</a></li>
+<li><a href="https://cgarbin.github.io/machine-learning-interpretability-feature-attribution/#feature-attributions-are-approximations">Machine learning interpretability with feature attribution</a></li>
 </ul>
 </article>
 </div>
@@ -524,7 +511,7 @@
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="20.Gradient-Based:利用梯度訊息解釋神經網路/" rel="prev" title="[Day 20] Gradient-Based：利用梯度訊息解釋神經網路">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../17.解析深度神經網路:使用Deep SHAP進行模型解釋/" rel="prev" title="[Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -533,17 +520,17 @@
 <span class="md-footer-nav__direction">
                   上一頁
                 </span>
-                [Day 20] Gradient-Based：利用梯度訊息解釋神經網路
+                [Day 17] 解析深度神經網路：使用Deep SHAP進行模型解釋
               </span>
 </div>
 </a>
-<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="22.CAM-Based:如何解釋卷積神經網路/" rel="next" title="[Day 22] CAM-Based：如何解釋卷積神經網路">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="../19.Perturbation Based如何用擾動方法解釋神經網路/" rel="next" title="[Day 19] Perturbation-Based：如何用擾動方法解釋神經網路">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
                   下一頁
                 </span>
-                [Day 22] CAM-Based：如何解釋卷積神經網路
+                [Day 19] Perturbation-Based：如何用擾動方法解釋神經網路
               </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

@@ -15,7 +15,7 @@ theme:
   palette:
     primary: 'deep purple'
     accent: 'deep purple'
-repo_url: https://github.com/andy6804tw/2023-15th-ironman
+repo_url: https://github.com/andy6804tw/crazyai-xai
 # use_directory_urls: false
 edit_uri: ""
 # Copyright
@@ -42,12 +42,12 @@ nav:
   - '4.XAI在深度學習中的可解釋性':
     - '16.神經網路的可解釋性:如何理解深度學習中的黑箱模型.md'
     - '17.解析深度神經網路:使用Deep SHAP進行模型解釋.md'
-    - '18.CNN:卷積深度神經網路的解釋方法.md'
-    - '19.Perturbation-Based:如何用擾動方法解釋神經網路.md'
-    - '20.Gradient-Based:利用梯度訊息解釋神經網路.md'
-    - '21.Propagation-Based:探索反向傳播法的可解釋性.md'
-    - '22.CAM-Based:如何解釋卷積神經網路.md'
-    - '23.Attention-Based:使用注意力機制解釋CNN模型.md'
+    - '18.CNN：卷積深度神經網路的解釋方法.md'
+    - '19.Perturbation-Based：如何用擾動方法解釋神經網路.md'
+    - '20.Gradient-Based：利用梯度訊息解釋神經網路.md'
+    - '21.Propagation-Based：探索反向傳播法的可解釋性.md'
+    - '22.CAM-Based：如何解釋卷積神經網路.md'
+    - 'Attention-Based：使用注意力機制解釋CNN模型.md'
   - '5.XAI在現實生活中的應用案例':
     - '24.LSTM的可解釋性:解析步態分類中的時序資料.md'
     - '25.XAI在影像處理中的瑕疵檢測:解釋卷積神經網路的運作.md'

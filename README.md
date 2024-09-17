@@ -1,5 +1,5 @@
 # 揭開黑箱模型：探索可解釋人工智慧
-<a href="https://andy6804tw.github.io/crazyai-xai" target="_blank">
+<a href="https://andy6804tw.github.io/crazyai-xai">
   <img align="left" width=140 alt="blog" src="design/ebook-dark.png" />
 </a>
 <a href="https://andy6804tw.github.io/crazyai-xai/pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf">

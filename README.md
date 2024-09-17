@@ -1,4 +1,14 @@
 # 揭開黑箱模型：探索可解釋人工智慧
+<a href="https://andy6804tw.github.io/crazyai-ml/">
+  <img align="left" width=140 alt="blog" src="design/ebook-dark.png" />
+</a>
+<a href="https://andy6804tw.github.io/crazyai-xai/pdf/全民瘋AI系列_探索可解釋人工智慧_v1.1.pdf">
+  <img align="left" width=150 alt="blog" src="design/pdf-dark.png" />
+</a>
+<a href="https://spotifyanchor-web.app.link/e/wloo7pSeXMb">
+  <img align="left" alt="blog" src="design/spotify-dark.svg" />
+</a>
+<br><br>
 
 > [第15屆iT邦幫忙鐵人賽](https://ithelp.ithome.com.tw/users/20107247/ironman/6272)
 
